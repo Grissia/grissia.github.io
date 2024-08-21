@@ -21,85 +21,21 @@
       </categories>
   </entry>
   <entry>
-    <title>apcs_camp 資料結構筆記</title>
-    <url>/2024/08/21/apcs-camp-note-1/</url>
-    <content><![CDATA[<p>資料結構就是 <em>儲存資料的工具&amp;方式</em></p>
-<h2 id="STL-Standard-Template-Library-標準模板庫"><a href="#STL-Standard-Template-Library-標準模板庫" class="headerlink" title="STL(Standard Template Library) 標準模板庫"></a>STL(Standard Template Library) 標準模板庫</h2><ul>
-<li>C++內建的標準通用模板，有一堆好用的資料結構與演算法</li>
-<li>要用 <strong>迭代器</strong> 存取</li>
-</ul>
-<blockquote>
-<p>STL容器的迭代器類型</p>
-</blockquote>
-<ul>
-<li>單向迭代器:只能往後，用遞增運算子(++it或it++)移動<br>  如 <em>unordered_set, unordered_multiset, unordered_map, unordered_multimap</em></li>
-<li>雙向迭代器:可以往前往後，(用++跟--)<br>  如 <em>list, set, multiset, map, multimap</em></li>
-<li>隨機存取迭代器:類似陣列 arr[i]，可以用(it+k或it-k)一次移動多格<br>  如 <em>vector, Deque, array, string</em></li>
-<li>沒有迭代器<br>  如 <em>stack, queue, priority_queue</em></li>
-</ul>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 迭代器的遍歷</span></span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="type">int</span>&gt;::iterator it = vt.<span class="built_in">begin</span>(); it != vt.<span class="built_in">end</span>(); it++) &#123;</span><br><span class="line">    cout &lt;&lt; *it &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="type">int</span>&gt;::reverse_iterator rit = vt.<span class="built_in">rbegin</span>(); rit != vt.<span class="built_in">rend</span>(); rit++) &#123;</span><br><span class="line">    cout &lt;&lt; *rit &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> &amp;x : vt) &#123;</span><br><span class="line">    cout &lt;&lt; x &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+    <title>apcs_camp 蘋果問題題解</title>
+    <url>/2024/08/19/apcs-camp-sol-1/</url>
+    <content><![CDATA[<h2 id="難到沒人懂的位元枚舉"><a href="#難到沒人懂的位元枚舉" class="headerlink" title="難到沒人懂的位元枚舉"></a>難到沒人懂的位元枚舉</h2><h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><p>第一行有一個整數 <em>n</em> 表示蘋果的數量<br>第二行有 <em>n</em> 個整數表示每個蘋果的重量</p>
+<p>請輸出將蘋果分兩籃後 兩籃最小的重量差</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">測資</span><br><span class="line">5</span><br><span class="line">3 2 7 4 1</span><br><span class="line">輸出</span><br><span class="line">1</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="Pair"><a href="#Pair" class="headerlink" title="Pair"></a>Pair</h2><ul>
-<li>需要 #include &lt;utility&gt;</li>
-<li>能綁定兩組數據</li>
-<li>宣告:<br>  pair&lt;T1,T2&gt; p;<br>  T1、T2是該位置的型態</li>
-<li>初始化:<br>  pair&lt;T1,T2&gt; p(a,b);<br>  pair&lt;T1,T2&gt; a &#x3D; make_pair(a,b);<br>  pair&lt;T1,T2&gt; p &#x3D; {a,b};</li>
-<li>取值:<br>  p.first<br>  p.second</li>
-</ul>
-<h2 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h2><ul>
-<li>需要 #include &lt;tuple&gt;</li>
-<li>可以綁三組以上的資料</li>
-<li>宣告:<br>  tuple&lt;T1,T2,T3,T4,…&gt; t;<br>  T1、T2、T3…是該位置的型態</li>
-<li>初始化:<br>  tuple&lt;T1,T2,T3,…&gt; t(a,b,c,…);<br>  tuple&lt;T1,T2&gt; a &#x3D; make_tuple(a,b);<br>  tuple&lt;T1,T2&gt; t &#x3D; {a,b};</li>
-<li>取值:<br>  get&lt;0&gt; t<br>  get&lt;1&gt; t</li>
-</ul>
-<h2 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h2><ul>
-<li><p>需要 #include &lt;vector&gt;</p>
-</li>
-<li><p>宣告:<br>  vector&lt;T&gt; v;<br>  T是該vector的型態</p>
-</li>
-<li><p>初始化:<br>  vector&lt;T&gt; v(n,a);<br>  n 是 vector 長度<br>  a 是初始化的值</p>
-</li>
-<li><p>常用函式<br>  <strong>.push_back(a)</strong><br>  &#x2F;&#x2F; 就 push</p>
-<p>  <strong>.pop_back()</strong><br>  &#x2F;&#x2F; 就 pop</p>
-<p>  <strong>.size()</strong><br>  &#x2F;&#x2F; 回傳容器長度</p>
-<p>  <strong>.empty()</strong><br>  &#x2F;&#x2F; 回傳容器是否為空</p>
-<p>  <strong>.front()</strong><br>  &#x2F;&#x2F; 回傳第一個值</p>
-<p>  <strong>.back()</strong><br>  &#x2F;&#x2F; 回傳最後一個值</p>
-<p>  <strong>.begin()</strong><br>  &#x2F;&#x2F; 回傳 iterator 並指向第一個</p>
-<p>  <strong>.end()</strong><br>  &#x2F;&#x2F; 回傳 iterator 並指向最後一個的下一個</p>
-<p>  <strong>.clear()</strong><br>  &#x2F;&#x2F; 清空容器</p>
-</li>
-</ul>
-<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><ul>
-<li>需要先 #include &lt;stack&gt;</li>
-<li>FILO</li>
-<li>常用函式:<br>  <strong>.push(a)</strong><br>  <strong>.pop()</strong><br>  <strong>.size()</strong><br>  <strong>.empty()</strong><br>  <strong>.top()</strong><br>  &#x2F;&#x2F; 回傳最前端的值</li>
-</ul>
-<h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><ul>
-<li>需要先 #include &lt;queue&gt;</li>
-<li>FIFO</li>
-<li>常用函式:<br>  <strong>.push(a)</strong><br>  <strong>.pop()</strong><br>  <strong>.back()</strong><br>  <strong>.front()</strong><br>  <strong>.size()</strong><br>  <strong>.empty()</strong></li>
-</ul>
-<h2 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h2><ul>
-<li>需要先 #include &lt;deque&gt;</li>
-<li>可以存取前端跟末端</li>
-<li>常用函式:<br>  <strong>.push_back(a)</strong><br>  <strong>.push_front(a)</strong><br>  <strong>.pop_back()</strong><br>  <strong>.pop_front()</strong><br>  <strong>.back()</strong><br>  <strong>.front()</strong><br>  <strong>.size()</strong><br>  <strong>.empty()</strong><br>  <strong>.clear()</strong><br>  <strong>.begin()</strong><br>  <strong>.end()</strong></li>
-</ul>
-<h2 id="Linked-List"><a href="#Linked-List" class="headerlink" title="Linked List"></a>Linked List</h2><ul>
-<li>需要先 #include &lt;list&gt;</li>
-<li>需要用迭代器存取</li>
-<li>常用函式:<br>  <strong>.push_back(a)</strong><br>  <strong>.push_front(a)</strong><br>  <strong>.pop_back()</strong><br>  <strong>.pop_front()</strong><br>  <strong>.back()</strong><br>  <strong>.front()</strong><br>  <strong>.size()</strong><br>  <strong>.empty()</strong><br>  <strong>.clear()</strong><br>  <strong>.begin()</strong><br>  <strong>.end()</strong><br>  <strong>.advance(n)</strong><br>  &#x2F;&#x2F; 迭代器往後移動 n 格<br>  <strong>.insert(n,a)</strong><br>  &#x2F;&#x2F; n 是迭代器的位置 例如:(lt.begin()+2)<br>  &#x2F;&#x2F; a 是要插入的值<br>  <strong>erase(n)</strong><br>  &#x2F;&#x2F; n 同上，刪除位置 n 的值</li>
-</ul>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 範例</span></span><br><span class="line">list&lt;T1&gt; lt = &#123;<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">lt.<span class="built_in">insert</span>()</span><br></pre></td></tr></table></figure></div>]]></content>
+<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><p>假設五顆蘋果分別重 <em>2,4,5,3,1</em><br>跑一個迴圈從二進位的 <em>00000</em> 到 <em>10000</em> (因為 <em>00001</em> 跟 <em>11110</em> 一樣，所以沒必要檢查到 <em>11111</em> )<br>也可以寫作 0 到小於 (1 &lt;&lt; 5-1) (減會優先運算所以就是 1 &lt;&lt; 4)<br>然後用這個二進位的位元來當作每顆蘋果進哪個籃子的依據<br><del>總之就是所有情況模擬一次拉 哈哈哈哈哈哈哈</del></p>
+<h3 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>); ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>); <span class="comment">// cin加速器</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; arr; </span><br><span class="line">    <span class="comment">// 存每個蘋果重</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> a,i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; a;</span><br><span class="line">        arr.<span class="built_in">push_back</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 輸入蘋果</span></span><br><span class="line">    </span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">1e18</span>; <span class="comment">// 先給一個很大的數</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; (<span class="number">1</span> &lt;&lt; n<span class="number">-1</span>); i++)&#123; <span class="comment">// 預定一個範圍</span></span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> sum[<span class="number">2</span>] = &#123;&#125;; <span class="comment">// 籃子</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j&lt;n; j++)&#123; </span><br><span class="line">            sum[i &gt;&gt; j &amp; <span class="number">1</span>] += arr[j];</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            喔喔喔 這東西看起來超可怕</span></span><br><span class="line"><span class="comment">            就像前面解題思路寫的 i 可能是 01100 之類的</span></span><br><span class="line"><span class="comment">            那 j 就是從 0 到 5-1</span></span><br><span class="line"><span class="comment">            所以這行的意思就是把 i 從右移 j 之後檢查最後一位</span></span><br><span class="line"><span class="comment">            如果是 1 就丟 1 號籃</span></span><br><span class="line"><span class="comment">            如果是 0 就丟 0 號籃</span></span><br><span class="line"><span class="comment">            */</span> </span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">min</span>(ans,<span class="built_in">llabs</span>(sum[<span class="number">0</span>] - sum[<span class="number">1</span>]));</span><br><span class="line">        <span class="comment">// 計算兩籃差 是不是小於 ans</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>]]></content>
       <categories>
-        <category>程式筆記</category>
+        <category>程式題解</category>
       </categories>
       <tags>
-        <tag>APCS</tag>
         <tag>C++</tag>
-        <tag>筆記</tag>
-        <tag>資料結構</tag>
+        <tag>題解</tag>
+        <tag>APCS</tag>
       </tags>
   </entry>
   <entry>
@@ -121,21 +57,152 @@
 ]]></content>
   </entry>
   <entry>
-    <title>apcs_camp 蘋果問題題解</title>
-    <url>/2024/08/19/apcs-camp-sol-1/</url>
-    <content><![CDATA[<h2 id="難到沒人懂的位元枚舉"><a href="#難到沒人懂的位元枚舉" class="headerlink" title="難到沒人懂的位元枚舉"></a>難到沒人懂的位元枚舉</h2><h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><p>第一行有一個整數 <em>n</em> 表示蘋果的數量<br>第二行有 <em>n</em> 個整數表示每個蘋果的重量</p>
-<p>請輸出將蘋果分兩籃後 兩籃最小的重量差</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">測資</span><br><span class="line">5</span><br><span class="line">3 2 7 4 1</span><br><span class="line">輸出</span><br><span class="line">1</span><br></pre></td></tr></table></figure></div>
+    <title>apcs_camp 資料結構筆記</title>
+    <url>/2024/08/21/apcs-camp-note-1/</url>
+    <content><![CDATA[<p>資料結構就是 <em>儲存資料的工具&amp;方式</em></p>
+<h2 id="STL-Standard-Template-Library-標準模板庫"><a href="#STL-Standard-Template-Library-標準模板庫" class="headerlink" title="STL(Standard Template Library) 標準模板庫"></a>STL(Standard Template Library) 標準模板庫</h2><ul>
+<li>C++內建的標準通用模板，有一堆好用的資料結構與演算法</li>
+<li>要用 迭代器 存取</li>
+</ul>
+<blockquote>
+<p>STL容器的迭代器類型</p>
+</blockquote>
+<ul>
+<li>單向迭代器:只能往後，用遞增運算子(++it或it++)移動<br>  如 <em>unordered_set, unordered_multiset, unordered_map, unordered_multimap</em></li>
+<li>雙向迭代器:可以往前往後，(用++跟--)<br>  如 <em>list, set, multiset, map, multimap</em></li>
+<li>隨機存取迭代器:類似陣列 arr[i]，可以用(it+k或it-k)一次移動多格<br>  如 <em>vector, Deque, array, string</em></li>
+<li>沒有迭代器<br>  如 <em>stack, queue, priority_queue</em></li>
+</ul>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 迭代器的遍歷</span></span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="type">int</span>&gt;::iterator it = vt.<span class="built_in">begin</span>(); it != vt.<span class="built_in">end</span>(); it++) &#123;</span><br><span class="line">    cout &lt;&lt; *it &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="type">int</span>&gt;::reverse_iterator rit = vt.<span class="built_in">rbegin</span>(); rit != vt.<span class="built_in">rend</span>(); rit++) &#123;</span><br><span class="line">    cout &lt;&lt; *rit &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> &amp;x : vt) &#123;</span><br><span class="line">    cout &lt;&lt; x &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><p>假設五顆蘋果分別重 <em>2,4,5,3,1</em><br>跑一個迴圈從二進位的 <em>00000</em> 到 <em>10000</em> (因為 <em>00001</em> 跟 <em>11110</em> 一樣，所以沒必要檢查到 <em>11111</em> )<br>也可以寫作 0 到小於 (1 &lt;&lt; 5-1) (減會優先運算所以就是 1 &lt;&lt; 4)<br>然後用這個二進位的位元來當作每顆蘋果進哪個籃子的依據<br><del>總之就是所有情況模擬一次拉 哈哈哈哈哈哈哈</del></p>
-<h3 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>); ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>); <span class="comment">// cin加速器</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; arr; </span><br><span class="line">    <span class="comment">// 存每個蘋果重</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> a,i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; a;</span><br><span class="line">        arr.<span class="built_in">push_back</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 輸入蘋果</span></span><br><span class="line">    </span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">1e18</span>; <span class="comment">// 先給一個很大的數</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; (<span class="number">1</span> &lt;&lt; n<span class="number">-1</span>); i++)&#123; <span class="comment">// 預定一個範圍</span></span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> sum[<span class="number">2</span>] = &#123;&#125;; <span class="comment">// 籃子</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j&lt;n; j++)&#123; </span><br><span class="line">            sum[i &gt;&gt; j &amp; <span class="number">1</span>] += arr[j];</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            喔喔喔 這東西看起來超可怕</span></span><br><span class="line"><span class="comment">            就像前面解題思路寫的 i 可能是 01100 之類的</span></span><br><span class="line"><span class="comment">            那 j 就是從 0 到 5-1</span></span><br><span class="line"><span class="comment">            所以這行的意思就是把 i 從右移 j 之後檢查最後一位</span></span><br><span class="line"><span class="comment">            如果是 1 就丟 1 號籃</span></span><br><span class="line"><span class="comment">            如果是 0 就丟 0 號籃</span></span><br><span class="line"><span class="comment">            */</span> </span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">min</span>(ans,<span class="built_in">llabs</span>(sum[<span class="number">0</span>] - sum[<span class="number">1</span>]));</span><br><span class="line">        <span class="comment">// 計算兩籃差 是不是小於 ans</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>]]></content>
+<h2 id="Pair"><a href="#Pair" class="headerlink" title="Pair"></a>Pair</h2><blockquote>
+<p>需要 #include &lt;utility&gt;<br>能綁定兩組數據<br>宣告:</p>
+</blockquote>
+<pre><code>pair&lt;T1,T2&gt; p;
+T1、T2是該位置的型態
+</code></pre>
+<blockquote>
+<p>初始化:</p>
+</blockquote>
+<pre><code>pair&lt;T1,T2&gt; p(a,b);
+pair&lt;T1,T2&gt; a = make_pair(a,b);
+pair&lt;T1,T2&gt; p = &#123;a,b&#125;;
+</code></pre>
+<blockquote>
+<p>取值:</p>
+</blockquote>
+<pre><code>p.first
+p.second
+</code></pre>
+<h2 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h2><blockquote>
+<p>需要 #include &lt;tuple&gt;<br>可以綁三組以上的資料<br>宣告:</p>
+</blockquote>
+<pre><code>tuple&lt;T1,T2,T3,T4,...&gt; t;
+T1、T2、T3...是該位置的型態
+</code></pre>
+<blockquote>
+<p>初始化:</p>
+</blockquote>
+<pre><code>tuple&lt;T1,T2,T3,...&gt; t(a,b,c,...);
+tuple&lt;T1,T2&gt; a = make_tuple(a,b);
+tuple&lt;T1,T2&gt; t = &#123;a,b&#125;;
+</code></pre>
+<blockquote>
+<p>取值:</p>
+</blockquote>
+<pre><code>get&lt;0&gt; t
+get&lt;1&gt; t
+</code></pre>
+<h2 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h2><blockquote>
+<p>需要 #include &lt;vector&gt;<br>宣告:</p>
+</blockquote>
+<pre><code>vector\&lt;T&gt; v;
+T是該vector的型態
+</code></pre>
+<blockquote>
+<p>初始化:</p>
+</blockquote>
+<pre><code>vector\&lt;T&gt; v(n,a);
+n 是 vector 長度
+a 是初始化的值
+</code></pre>
+<blockquote>
+<p>常用函式</p>
+</blockquote>
+<pre><code>.push_back(a)
+// 就 push
+
+.pop_back()
+// 就 pop
+
+.size()
+// 回傳容器長度
+
+.empty()
+// 回傳容器是否為空
+
+.front()
+// 回傳第一個值
+
+.back()
+// 回傳最後一個值
+
+.begin()
+// 回傳 iterator 並指向第一個
+
+.end()
+// 回傳 iterator 並指向最後一個的下一個
+
+.clear()
+// 清空容器
+</code></pre>
+<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><blockquote>
+<p>需要先 #include &lt;stack&gt;<br>FILO<br>常用函式:</p>
+</blockquote>
+<pre><code>.push(a)
+.pop()
+.size()
+.empty()
+.top()
+// 回傳最前端的值
+</code></pre>
+<h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><blockquote>
+<p>需要先 #include &lt;queue&gt;<br>FIFO<br>常用函式:<br>    .push(a)<br>    .pop()<br>    .back()<br>    .front()<br>    .size()<br>    .empty()</p>
+</blockquote>
+<h2 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h2><blockquote>
+<p>需要先 #include &lt;deque&gt;<br>可以存取前端跟末端<br>常用函式:<br>    .push_back(a)<br>    .push_front(a)<br>    .pop_back()<br>    .pop_front()<br>    .back()<br>    .front()<br>    .size()<br>    .empty()<br>    .clear()<br>    .begin()<br>    .end()</p>
+</blockquote>
+<h2 id="Linked-List"><a href="#Linked-List" class="headerlink" title="Linked List"></a>Linked List</h2><blockquote>
+<p>需要先 #include &lt;list&gt;<br>需要用迭代器存取<br>常用函式:</p>
+</blockquote>
+<pre><code>.push_back(a)
+.push_front(a)
+.pop_back()
+.pop_front()
+.back()
+.front()
+.size()
+.empty()
+.clear()
+.begin()
+.end()
+.advance(n)
+// 迭代器往後移動 n 格
+.insert(n,a)
+// n 是迭代器的位置 例如:(lt.begin()+2)
+// a 是要插入的值
+erase(n)
+// n 同上，刪除位置 n 的值
+</code></pre>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 範例</span></span><br><span class="line">list&lt;T1&gt; lt = &#123;<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">lt.<span class="built_in">insert</span>()</span><br></pre></td></tr></table></figure></div>]]></content>
       <categories>
-        <category>程式題解</category>
+        <category>程式筆記</category>
       </categories>
       <tags>
-        <tag>APCS</tag>
         <tag>C++</tag>
-        <tag>題解</tag>
+        <tag>APCS</tag>
+        <tag>筆記</tag>
+        <tag>資料結構</tag>
       </tags>
   </entry>
 </search>

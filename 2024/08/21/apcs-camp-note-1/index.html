@@ -26,10 +26,10 @@
 <meta property="og:description" content="資料結構就是 儲存資料的工具&amp;方式 STL(Standard Template Library) 標準模板庫 C++內建的標準通用模板，有一堆好用的資料結構與演算法 要用 迭代器 存取   STL容器的迭代器類型   單向迭代器:只能往後，用遞增運算子(++it或it++)移動  如 unordered_set, unordered_multiset, unordered_map, uno">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-08-21T06:26:52.000Z">
-<meta property="article:modified_time" content="2024-08-21T07:33:44.917Z">
+<meta property="article:modified_time" content="2024-08-21T07:40:32.649Z">
 <meta property="article:author" content="Grissia">
-<meta property="article:tag" content="APCS">
 <meta property="article:tag" content="C++">
+<meta property="article:tag" content="APCS">
 <meta property="article:tag" content="筆記">
 <meta property="article:tag" content="資料結構">
 <meta name="twitter:card" content="summary">
@@ -587,8 +587,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-21 15:33:44</span>
-            <span class="mobile">2024-08-21 15:33:44</span>
+            <span class="desktop">2024-08-21 15:40:32</span>
+            <span class="mobile">2024-08-21 15:40:32</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -616,11 +616,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/APCS/">APCS</a>&nbsp;
+                        <a href="/tags/C/">C++</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/C/">C++</a>&nbsp;
+                        | <a href="/tags/APCS/">APCS</a>&nbsp;
                     </li>
                 
                     <li>
@@ -638,7 +638,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>681 字數</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>653 字數</span>
         </span>
     
     
@@ -665,7 +665,7 @@
             <p>資料結構就是 <em>儲存資料的工具&amp;方式</em></p>
 <h2 id="STL-Standard-Template-Library-標準模板庫"><a href="#STL-Standard-Template-Library-標準模板庫" class="headerlink" title="STL(Standard Template Library) 標準模板庫"></a>STL(Standard Template Library) 標準模板庫</h2><ul>
 <li>C++內建的標準通用模板，有一堆好用的資料結構與演算法</li>
-<li>要用 <strong>迭代器</strong> 存取</li>
+<li>要用 迭代器 存取</li>
 </ul>
 <blockquote>
 <p>STL容器的迭代器類型</p>
@@ -678,58 +678,125 @@
 </ul>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 迭代器的遍歷</span></span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="type">int</span>&gt;::iterator it = vt.<span class="built_in">begin</span>(); it != vt.<span class="built_in">end</span>(); it++) &#123;</span><br><span class="line">    cout &lt;&lt; *it &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="type">int</span>&gt;::reverse_iterator rit = vt.<span class="built_in">rbegin</span>(); rit != vt.<span class="built_in">rend</span>(); rit++) &#123;</span><br><span class="line">    cout &lt;&lt; *rit &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> &amp;x : vt) &#123;</span><br><span class="line">    cout &lt;&lt; x &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="Pair"><a href="#Pair" class="headerlink" title="Pair"></a>Pair</h2><ul>
-<li>需要 #include &lt;utility&gt;</li>
-<li>能綁定兩組數據</li>
-<li>宣告:<br>  pair&lt;T1,T2&gt; p;<br>  T1、T2是該位置的型態</li>
-<li>初始化:<br>  pair&lt;T1,T2&gt; p(a,b);<br>  pair&lt;T1,T2&gt; a &#x3D; make_pair(a,b);<br>  pair&lt;T1,T2&gt; p &#x3D; {a,b};</li>
-<li>取值:<br>  p.first<br>  p.second</li>
-</ul>
-<h2 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h2><ul>
-<li>需要 #include &lt;tuple&gt;</li>
-<li>可以綁三組以上的資料</li>
-<li>宣告:<br>  tuple&lt;T1,T2,T3,T4,…&gt; t;<br>  T1、T2、T3…是該位置的型態</li>
-<li>初始化:<br>  tuple&lt;T1,T2,T3,…&gt; t(a,b,c,…);<br>  tuple&lt;T1,T2&gt; a &#x3D; make_tuple(a,b);<br>  tuple&lt;T1,T2&gt; t &#x3D; {a,b};</li>
-<li>取值:<br>  get&lt;0&gt; t<br>  get&lt;1&gt; t</li>
-</ul>
-<h2 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h2><ul>
-<li><p>需要 #include &lt;vector&gt;</p>
-</li>
-<li><p>宣告:<br>  vector&lt;T&gt; v;<br>  T是該vector的型態</p>
-</li>
-<li><p>初始化:<br>  vector&lt;T&gt; v(n,a);<br>  n 是 vector 長度<br>  a 是初始化的值</p>
-</li>
-<li><p>常用函式<br>  <strong>.push_back(a)</strong><br>  &#x2F;&#x2F; 就 push</p>
-<p>  <strong>.pop_back()</strong><br>  &#x2F;&#x2F; 就 pop</p>
-<p>  <strong>.size()</strong><br>  &#x2F;&#x2F; 回傳容器長度</p>
-<p>  <strong>.empty()</strong><br>  &#x2F;&#x2F; 回傳容器是否為空</p>
-<p>  <strong>.front()</strong><br>  &#x2F;&#x2F; 回傳第一個值</p>
-<p>  <strong>.back()</strong><br>  &#x2F;&#x2F; 回傳最後一個值</p>
-<p>  <strong>.begin()</strong><br>  &#x2F;&#x2F; 回傳 iterator 並指向第一個</p>
-<p>  <strong>.end()</strong><br>  &#x2F;&#x2F; 回傳 iterator 並指向最後一個的下一個</p>
-<p>  <strong>.clear()</strong><br>  &#x2F;&#x2F; 清空容器</p>
-</li>
-</ul>
-<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><ul>
-<li>需要先 #include &lt;stack&gt;</li>
-<li>FILO</li>
-<li>常用函式:<br>  <strong>.push(a)</strong><br>  <strong>.pop()</strong><br>  <strong>.size()</strong><br>  <strong>.empty()</strong><br>  <strong>.top()</strong><br>  &#x2F;&#x2F; 回傳最前端的值</li>
-</ul>
-<h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><ul>
-<li>需要先 #include &lt;queue&gt;</li>
-<li>FIFO</li>
-<li>常用函式:<br>  <strong>.push(a)</strong><br>  <strong>.pop()</strong><br>  <strong>.back()</strong><br>  <strong>.front()</strong><br>  <strong>.size()</strong><br>  <strong>.empty()</strong></li>
-</ul>
-<h2 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h2><ul>
-<li>需要先 #include &lt;deque&gt;</li>
-<li>可以存取前端跟末端</li>
-<li>常用函式:<br>  <strong>.push_back(a)</strong><br>  <strong>.push_front(a)</strong><br>  <strong>.pop_back()</strong><br>  <strong>.pop_front()</strong><br>  <strong>.back()</strong><br>  <strong>.front()</strong><br>  <strong>.size()</strong><br>  <strong>.empty()</strong><br>  <strong>.clear()</strong><br>  <strong>.begin()</strong><br>  <strong>.end()</strong></li>
-</ul>
-<h2 id="Linked-List"><a href="#Linked-List" class="headerlink" title="Linked List"></a>Linked List</h2><ul>
-<li>需要先 #include &lt;list&gt;</li>
-<li>需要用迭代器存取</li>
-<li>常用函式:<br>  <strong>.push_back(a)</strong><br>  <strong>.push_front(a)</strong><br>  <strong>.pop_back()</strong><br>  <strong>.pop_front()</strong><br>  <strong>.back()</strong><br>  <strong>.front()</strong><br>  <strong>.size()</strong><br>  <strong>.empty()</strong><br>  <strong>.clear()</strong><br>  <strong>.begin()</strong><br>  <strong>.end()</strong><br>  <strong>.advance(n)</strong><br>  &#x2F;&#x2F; 迭代器往後移動 n 格<br>  <strong>.insert(n,a)</strong><br>  &#x2F;&#x2F; n 是迭代器的位置 例如:(lt.begin()+2)<br>  &#x2F;&#x2F; a 是要插入的值<br>  <strong>erase(n)</strong><br>  &#x2F;&#x2F; n 同上，刪除位置 n 的值</li>
-</ul>
+<h2 id="Pair"><a href="#Pair" class="headerlink" title="Pair"></a>Pair</h2><blockquote>
+<p>需要 #include &lt;utility&gt;<br>能綁定兩組數據<br>宣告:</p>
+</blockquote>
+<pre><code>pair&lt;T1,T2&gt; p;
+T1、T2是該位置的型態
+</code></pre>
+<blockquote>
+<p>初始化:</p>
+</blockquote>
+<pre><code>pair&lt;T1,T2&gt; p(a,b);
+pair&lt;T1,T2&gt; a = make_pair(a,b);
+pair&lt;T1,T2&gt; p = &#123;a,b&#125;;
+</code></pre>
+<blockquote>
+<p>取值:</p>
+</blockquote>
+<pre><code>p.first
+p.second
+</code></pre>
+<h2 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h2><blockquote>
+<p>需要 #include &lt;tuple&gt;<br>可以綁三組以上的資料<br>宣告:</p>
+</blockquote>
+<pre><code>tuple&lt;T1,T2,T3,T4,...&gt; t;
+T1、T2、T3...是該位置的型態
+</code></pre>
+<blockquote>
+<p>初始化:</p>
+</blockquote>
+<pre><code>tuple&lt;T1,T2,T3,...&gt; t(a,b,c,...);
+tuple&lt;T1,T2&gt; a = make_tuple(a,b);
+tuple&lt;T1,T2&gt; t = &#123;a,b&#125;;
+</code></pre>
+<blockquote>
+<p>取值:</p>
+</blockquote>
+<pre><code>get&lt;0&gt; t
+get&lt;1&gt; t
+</code></pre>
+<h2 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h2><blockquote>
+<p>需要 #include &lt;vector&gt;<br>宣告:</p>
+</blockquote>
+<pre><code>vector\&lt;T&gt; v;
+T是該vector的型態
+</code></pre>
+<blockquote>
+<p>初始化:</p>
+</blockquote>
+<pre><code>vector\&lt;T&gt; v(n,a);
+n 是 vector 長度
+a 是初始化的值
+</code></pre>
+<blockquote>
+<p>常用函式</p>
+</blockquote>
+<pre><code>.push_back(a)
+// 就 push
+
+.pop_back()
+// 就 pop
+
+.size()
+// 回傳容器長度
+
+.empty()
+// 回傳容器是否為空
+
+.front()
+// 回傳第一個值
+
+.back()
+// 回傳最後一個值
+
+.begin()
+// 回傳 iterator 並指向第一個
+
+.end()
+// 回傳 iterator 並指向最後一個的下一個
+
+.clear()
+// 清空容器
+</code></pre>
+<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><blockquote>
+<p>需要先 #include &lt;stack&gt;<br>FILO<br>常用函式:</p>
+</blockquote>
+<pre><code>.push(a)
+.pop()
+.size()
+.empty()
+.top()
+// 回傳最前端的值
+</code></pre>
+<h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><blockquote>
+<p>需要先 #include &lt;queue&gt;<br>FIFO<br>常用函式:<br>    .push(a)<br>    .pop()<br>    .back()<br>    .front()<br>    .size()<br>    .empty()</p>
+</blockquote>
+<h2 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h2><blockquote>
+<p>需要先 #include &lt;deque&gt;<br>可以存取前端跟末端<br>常用函式:<br>    .push_back(a)<br>    .push_front(a)<br>    .pop_back()<br>    .pop_front()<br>    .back()<br>    .front()<br>    .size()<br>    .empty()<br>    .clear()<br>    .begin()<br>    .end()</p>
+</blockquote>
+<h2 id="Linked-List"><a href="#Linked-List" class="headerlink" title="Linked List"></a>Linked List</h2><blockquote>
+<p>需要先 #include &lt;list&gt;<br>需要用迭代器存取<br>常用函式:</p>
+</blockquote>
+<pre><code>.push_back(a)
+.push_front(a)
+.pop_back()
+.pop_front()
+.back()
+.front()
+.size()
+.empty()
+.clear()
+.begin()
+.end()
+.advance(n)
+// 迭代器往後移動 n 格
+.insert(n,a)
+// n 是迭代器的位置 例如:(lt.begin()+2)
+// a 是要插入的值
+erase(n)
+// n 同上，刪除位置 n 的值
+</code></pre>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 範例</span></span><br><span class="line">list&lt;T1&gt; lt = &#123;<span class="number">2</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">lt.<span class="built_in">insert</span>()</span><br></pre></td></tr></table></figure></div>
         </div>
 
@@ -744,7 +811,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-08-21 15:33:44
+                    :</strong> 2024-08-21 15:40:32
             </li>
         
         <li>
@@ -770,11 +837,11 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/APCS/">#APCS</a>&nbsp;
+                        <a href="/tags/C/">#C++</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/C/">#C++</a>&nbsp;
+                        <a href="/tags/APCS/">#APCS</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
