@@ -26,10 +26,10 @@
 <meta property="og:description" content="資料結構就是 儲存資料的工具&amp;方式 STL(Standard Template Library) 標準模板庫 C++內建的標準通用模板，有一堆好用的資料結構與演算法 要用 迭代器 存取   STL容器的迭代器類型   單向迭代器:只能往後，用遞增運算子(++it或it++)移動  如 unordered_set, unordered_multiset, unordered_map, uno">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-08-21T06:26:52.000Z">
-<meta property="article:modified_time" content="2024-08-21T07:43:05.296Z">
+<meta property="article:modified_time" content="2024-08-21T07:46:17.955Z">
 <meta property="article:author" content="Grissia">
-<meta property="article:tag" content="APCS">
 <meta property="article:tag" content="C++">
+<meta property="article:tag" content="APCS">
 <meta property="article:tag" content="筆記">
 <meta property="article:tag" content="資料結構">
 <meta name="twitter:card" content="summary">
@@ -587,8 +587,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-21 15:43:05</span>
-            <span class="mobile">2024-08-21 15:43:05</span>
+            <span class="desktop">2024-08-21 15:46:17</span>
+            <span class="mobile">2024-08-21 15:46:17</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -616,11 +616,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/APCS/">APCS</a>&nbsp;
+                        <a href="/tags/C/">C++</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/C/">C++</a>&nbsp;
+                        | <a href="/tags/APCS/">APCS</a>&nbsp;
                     </li>
                 
                     <li>
@@ -678,7 +678,7 @@
 </ul>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 迭代器的遍歷</span></span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="type">int</span>&gt;::iterator it = vt.<span class="built_in">begin</span>(); it != vt.<span class="built_in">end</span>(); it++) &#123;</span><br><span class="line">    cout &lt;&lt; *it &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="type">int</span>&gt;::reverse_iterator rit = vt.<span class="built_in">rbegin</span>(); rit != vt.<span class="built_in">rend</span>(); rit++) &#123;</span><br><span class="line">    cout &lt;&lt; *rit &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> &amp;x : vt) &#123;</span><br><span class="line">    cout &lt;&lt; x &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="Pair"><a href="#Pair" class="headerlink" title="Pair"></a>Pair</h2><blockquote>
+<h3 id="Pair"><a href="#Pair" class="headerlink" title="Pair"></a>Pair</h3><blockquote>
 <p>需要 #include &lt;utility&gt;<br>能綁定兩組數據</p>
 </blockquote>
 <blockquote>
@@ -700,7 +700,7 @@ pair&lt;T1,T2&gt; p = &#123;a,b&#125;;
 <pre><code>p.first
 p.second
 </code></pre>
-<h2 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h2><blockquote>
+<h3 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h3><blockquote>
 <p>需要 #include &lt;tuple&gt;<br>可以綁三組以上的資料</p>
 </blockquote>
 <blockquote>
@@ -722,7 +722,7 @@ tuple&lt;T1,T2&gt; t = &#123;a,b&#125;;
 <pre><code>get&lt;0&gt; t
 get&lt;1&gt; t
 </code></pre>
-<h2 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h2><blockquote>
+<h3 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h3><blockquote>
 <p>需要 #include &lt;vector&gt;</p>
 </blockquote>
 <blockquote>
@@ -768,7 +768,7 @@ a 是初始化的值
 .clear()
 // 清空容器
 </code></pre>
-<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><blockquote>
+<h3 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h3><blockquote>
 <p>需要先 #include &lt;stack&gt;<br>FILO</p>
 </blockquote>
 <blockquote>
@@ -781,10 +781,10 @@ a 是初始化的值
 .top()
 // 回傳最前端的值
 </code></pre>
-<h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><blockquote>
+<h3 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h3><blockquote>
 <p>需要先 #include &lt;queue&gt;<br>FIFO<br>常用函式:<br>    .push(a)<br>    .pop()<br>    .back()<br>    .front()<br>    .size()<br>    .empty()</p>
 </blockquote>
-<h2 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h2><blockquote>
+<h3 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h3><blockquote>
 <p>需要先 #include &lt;deque&gt;<br>可以存取前端跟末端</p>
 </blockquote>
 <blockquote>
@@ -802,7 +802,7 @@ a 是初始化的值
 .begin()
 .end()
 </code></pre>
-<h2 id="Linked-List"><a href="#Linked-List" class="headerlink" title="Linked List"></a>Linked List</h2><blockquote>
+<h3 id="Linked-List"><a href="#Linked-List" class="headerlink" title="Linked List"></a>Linked List</h3><blockquote>
 <p>需要先 #include &lt;list&gt;<br>需要用迭代器存取</p>
 </blockquote>
 <blockquote>
@@ -841,7 +841,7 @@ erase(n)
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-08-21 15:43:05
+                    :</strong> 2024-08-21 15:46:17
             </li>
         
         <li>
@@ -867,11 +867,11 @@ erase(n)
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/APCS/">#APCS</a>&nbsp;
+                        <a href="/tags/C/">#C++</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/C/">#C++</a>&nbsp;
+                        <a href="/tags/APCS/">#APCS</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
@@ -919,7 +919,7 @@ erase(n)
     <div class="post-toc">
         <div class="toc-title">此頁目錄</div>
         <div class="page-title">apcs_camp 資料結構筆記</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#STL-Standard-Template-Library-%E6%A8%99%E6%BA%96%E6%A8%A1%E6%9D%BF%E5%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">STL(Standard Template Library) 標準模板庫</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pair"><span class="nav-number">2.</span> <span class="nav-text">Pair</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tuple"><span class="nav-number">3.</span> <span class="nav-text">Tuple</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vector"><span class="nav-number">4.</span> <span class="nav-text">Vector</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stack"><span class="nav-number">5.</span> <span class="nav-text">Stack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Queue"><span class="nav-number">6.</span> <span class="nav-text">Queue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deque"><span class="nav-number">7.</span> <span class="nav-text">Deque</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linked-List"><span class="nav-number">8.</span> <span class="nav-text">Linked List</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#STL-Standard-Template-Library-%E6%A8%99%E6%BA%96%E6%A8%A1%E6%9D%BF%E5%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">STL(Standard Template Library) 標準模板庫</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pair"><span class="nav-number">1.1.</span> <span class="nav-text">Pair</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tuple"><span class="nav-number">1.2.</span> <span class="nav-text">Tuple</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vector"><span class="nav-number">1.3.</span> <span class="nav-text">Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stack"><span class="nav-number">1.4.</span> <span class="nav-text">Stack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Queue"><span class="nav-number">1.5.</span> <span class="nav-text">Queue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deque"><span class="nav-number">1.6.</span> <span class="nav-text">Deque</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linked-List"><span class="nav-number">1.7.</span> <span class="nav-text">Linked List</span></a></li></ol></li></ol>
 
     </div>
 </div>
