@@ -21,46 +21,6 @@
       </categories>
   </entry>
   <entry>
-    <title>apcs_camp 蘋果問題題解</title>
-    <url>/2024/08/19/apcs-camp-sol-1/</url>
-    <content><![CDATA[<h2 id="難到沒人懂的位元枚舉"><a href="#難到沒人懂的位元枚舉" class="headerlink" title="難到沒人懂的位元枚舉"></a>難到沒人懂的位元枚舉</h2><h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><p>第一行有一個整數 <em>n</em> 表示蘋果的數量<br>第二行有 <em>n</em> 個整數表示每個蘋果的重量</p>
-<p>請輸出將蘋果分兩籃後 兩籃最小的重量差</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">測資</span><br><span class="line">5</span><br><span class="line">3 2 7 4 1</span><br><span class="line">輸出</span><br><span class="line">1</span><br></pre></td></tr></table></figure></div>
-
-<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><p>假設五顆蘋果分別重 <em>2,4,5,3,1</em><br>跑一個迴圈從二進位的 <em>00000</em> 到 <em>10000</em> (因為 <em>00001</em> 跟 <em>11110</em> 一樣，所以沒必要檢查到 <em>11111</em> )<br>也可以寫作 0 到小於 (1 &lt;&lt; 5-1) (減會優先運算所以就是 1 &lt;&lt; 4)<br>然後用這個二進位的位元來當作每顆蘋果進哪個籃子的依據<br><del>總之就是所有情況模擬一次拉 哈哈哈哈哈哈哈</del></p>
-<h3 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>); ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>); <span class="comment">// cin加速器</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; arr; </span><br><span class="line">    <span class="comment">// 存每個蘋果重</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> a,i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; a;</span><br><span class="line">        arr.<span class="built_in">push_back</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 輸入蘋果</span></span><br><span class="line">    </span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">1e18</span>; <span class="comment">// 先給一個很大的數</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; (<span class="number">1</span> &lt;&lt; n<span class="number">-1</span>); i++)&#123; <span class="comment">// 預定一個範圍</span></span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> sum[<span class="number">2</span>] = &#123;&#125;; <span class="comment">// 籃子</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j&lt;n; j++)&#123; </span><br><span class="line">            sum[i &gt;&gt; j &amp; <span class="number">1</span>] += arr[j];</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            喔喔喔 這東西看起來超可怕</span></span><br><span class="line"><span class="comment">            就像前面解題思路寫的 i 可能是 01100 之類的</span></span><br><span class="line"><span class="comment">            那 j 就是從 0 到 5-1</span></span><br><span class="line"><span class="comment">            所以這行的意思就是把 i 從右移 j 之後檢查最後一位</span></span><br><span class="line"><span class="comment">            如果是 1 就丟 1 號籃</span></span><br><span class="line"><span class="comment">            如果是 0 就丟 0 號籃</span></span><br><span class="line"><span class="comment">            */</span> </span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">min</span>(ans,<span class="built_in">llabs</span>(sum[<span class="number">0</span>] - sum[<span class="number">1</span>]));</span><br><span class="line">        <span class="comment">// 計算兩籃差 是不是小於 ans</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>]]></content>
-      <categories>
-        <category>程式題解</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>題解</tag>
-        <tag>APCS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何用hexo創建部落格(基礎簡易版)</title>
-    <url>/2024/08/21/build-a-blog-with-hexo/</url>
-    <content><![CDATA[<h2 id="第一步-下載-node-js"><a href="#第一步-下載-node-js" class="headerlink" title="第一步:下載 node.js"></a>第一步:下載 node.js</h2><p>可以到 <a class="link"   href="https://nodejs.org/" >node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 下載最新的版本<br>下一步 下一步 下一步 安裝成功</p>
-<h2 id="第二步-github-設定"><a href="#第二步-github-設定" class="headerlink" title="第二步: github 設定"></a>第二步: github 設定</h2><p>因為我是用 github pages<br>所以會需要用到 github 來公開網站</p>
-<h3 id="在-github-創建一個新的-repository"><a href="#在-github-創建一個新的-repository" class="headerlink" title="在 github 創建一個新的 repository"></a>在 github 創建一個新的 repository</h3><p>名字取作 你的帳號.github.io 例如:(grissia.github.io)<br>然後其他都留預設就可以了</p>
-<h2 id="第三步-安裝-hexo"><a href="#第三步-安裝-hexo" class="headerlink" title="第三步:安裝 hexo"></a>第三步:安裝 hexo</h2><p>可以到 <a class="link"   href="https://hexo.io/" >Hexo的官網 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>或用我底下附的指令</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 安裝hexo</span><br><span class="line">npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">// 創建一個叫做blog的網頁專案</span><br><span class="line">hexo init blog</span><br><span class="line"></span><br><span class="line">// 進入剛創的資料夾</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line"></span><br><span class="line">// 加載 npm</span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line">// 在本地運行(目前不需要)</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="第四步-把網頁交給-github"><a href="#第四步-把網頁交給-github" class="headerlink" title="第四步:把網頁交給 github"></a>第四步:把網頁交給 github</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 生成網頁檔案</span><br><span class="line">hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>輸入後就會看到多了一個 public 資料夾<br>把裡面的東西全部上傳到剛剛創的repository就大功告成</p>
-]]></content>
-      <categories>
-        <category>教學</category>
-      </categories>
-      <tags>
-        <tag>網頁</tag>
-        <tag>教學</tag>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>apcs_camp 資料結構筆記</title>
     <url>/2024/08/21/apcs-camp-note-1/</url>
     <content><![CDATA[<p>資料結構就是 <em>儲存資料的工具&amp;方式</em></p>
@@ -233,10 +193,50 @@ erase(n)
         <category>程式筆記</category>
       </categories>
       <tags>
-        <tag>C++</tag>
         <tag>APCS</tag>
+        <tag>C++</tag>
         <tag>筆記</tag>
         <tag>資料結構</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>apcs_camp 蘋果問題題解</title>
+    <url>/2024/08/19/apcs-camp-sol-1/</url>
+    <content><![CDATA[<h2 id="難到沒人懂的位元枚舉"><a href="#難到沒人懂的位元枚舉" class="headerlink" title="難到沒人懂的位元枚舉"></a>難到沒人懂的位元枚舉</h2><h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><p>第一行有一個整數 <em>n</em> 表示蘋果的數量<br>第二行有 <em>n</em> 個整數表示每個蘋果的重量</p>
+<p>請輸出將蘋果分兩籃後 兩籃最小的重量差</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">測資</span><br><span class="line">5</span><br><span class="line">3 2 7 4 1</span><br><span class="line">輸出</span><br><span class="line">1</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><p>假設五顆蘋果分別重 <em>2,4,5,3,1</em><br>跑一個迴圈從二進位的 <em>00000</em> 到 <em>10000</em> (因為 <em>00001</em> 跟 <em>11110</em> 一樣，所以沒必要檢查到 <em>11111</em> )<br>也可以寫作 0 到小於 (1 &lt;&lt; 5-1) (減會優先運算所以就是 1 &lt;&lt; 4)<br>然後用這個二進位的位元來當作每顆蘋果進哪個籃子的依據<br><del>總之就是所有情況模擬一次拉 哈哈哈哈哈哈哈</del></p>
+<h3 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>); ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>); <span class="comment">// cin加速器</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; arr; </span><br><span class="line">    <span class="comment">// 存每個蘋果重</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> a,i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; a;</span><br><span class="line">        arr.<span class="built_in">push_back</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 輸入蘋果</span></span><br><span class="line">    </span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">1e18</span>; <span class="comment">// 先給一個很大的數</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; (<span class="number">1</span> &lt;&lt; n<span class="number">-1</span>); i++)&#123; <span class="comment">// 預定一個範圍</span></span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> sum[<span class="number">2</span>] = &#123;&#125;; <span class="comment">// 籃子</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j&lt;n; j++)&#123; </span><br><span class="line">            sum[i &gt;&gt; j &amp; <span class="number">1</span>] += arr[j];</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            喔喔喔 這東西看起來超可怕</span></span><br><span class="line"><span class="comment">            就像前面解題思路寫的 i 可能是 01100 之類的</span></span><br><span class="line"><span class="comment">            那 j 就是從 0 到 5-1</span></span><br><span class="line"><span class="comment">            所以這行的意思就是把 i 從右移 j 之後檢查最後一位</span></span><br><span class="line"><span class="comment">            如果是 1 就丟 1 號籃</span></span><br><span class="line"><span class="comment">            如果是 0 就丟 0 號籃</span></span><br><span class="line"><span class="comment">            */</span> </span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">min</span>(ans,<span class="built_in">llabs</span>(sum[<span class="number">0</span>] - sum[<span class="number">1</span>]));</span><br><span class="line">        <span class="comment">// 計算兩籃差 是不是小於 ans</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>]]></content>
+      <categories>
+        <category>程式題解</category>
+      </categories>
+      <tags>
+        <tag>APCS</tag>
+        <tag>C++</tag>
+        <tag>題解</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何用hexo創建部落格(基礎簡易版)</title>
+    <url>/2024/08/21/build-a-blog-with-hexo/</url>
+    <content><![CDATA[<h2 id="第一步-下載-node-js"><a href="#第一步-下載-node-js" class="headerlink" title="第一步:下載 node.js"></a>第一步:下載 node.js</h2><p>可以到 <a class="link"   href="https://nodejs.org/" >node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 下載最新的版本<br>下一步 下一步 下一步 安裝成功</p>
+<h2 id="第二步-github-設定"><a href="#第二步-github-設定" class="headerlink" title="第二步: github 設定"></a>第二步: github 設定</h2><p>因為我是用 github pages<br>所以會需要用到 github 來公開網站</p>
+<h3 id="在-github-創建一個新的-repository"><a href="#在-github-創建一個新的-repository" class="headerlink" title="在 github 創建一個新的 repository"></a>在 github 創建一個新的 repository</h3><p>名字取作 你的帳號.github.io 例如:(grissia.github.io)<br>然後其他都留預設就可以了</p>
+<h2 id="第三步-安裝-hexo"><a href="#第三步-安裝-hexo" class="headerlink" title="第三步:安裝 hexo"></a>第三步:安裝 hexo</h2><p>可以到 <a class="link"   href="https://hexo.io/" >Hexo的官網 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>或用我底下附的指令</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 安裝hexo</span><br><span class="line">npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">// 創建一個叫做blog的網頁專案</span><br><span class="line">hexo init blog</span><br><span class="line"></span><br><span class="line">// 進入剛創的資料夾</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line"></span><br><span class="line">// 加載 npm</span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line">// 在本地運行(目前不需要)</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="第四步-把網頁交給-github"><a href="#第四步-把網頁交給-github" class="headerlink" title="第四步:把網頁交給 github"></a>第四步:把網頁交給 github</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 生成網頁檔案</span><br><span class="line">hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>輸入後就會看到多了一個 public 資料夾<br>把裡面的東西全部上傳到剛剛創的repository就大功告成</p>
+]]></content>
+      <categories>
+        <category>教學</category>
+      </categories>
+      <tags>
+        <tag>網頁</tag>
+        <tag>教學</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
 </search>
