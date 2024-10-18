@@ -18,19 +18,19 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="難到沒人懂的位元枚舉題目第一行有一個整數 n 表示蘋果的數量第二行有 n 個整數表示每個蘋果的重量 請輸出將蘋果分兩籃後 兩籃最小的重量差 12345測資53 2 7 4 1輸出1  解題思路假設五顆蘋果分別重 2,4,5,3,1跑一個迴圈從二進位的 00000 到 10000 (因為 00001 跟 11110 一樣，所以沒必要檢查到 11111 )也可以寫作 0 到小於 (1 &lt;&lt;">
+        <meta name="description" content="難到沒人懂的位元枚舉 題目第一行有一個整數 n 表示蘋果的數量第二行有 n 個整數表示每個蘋果的重量 請輸出將蘋果分兩籃後 兩籃最小的重量差 12345測資53 2 7 4 1輸出1  解題思路假設五顆蘋果分別重 2,4,5,3,1跑一個迴圈從二進位的 00000 到 10000 (因為 00001 跟 11110 一樣，所以沒必要檢查到 11111 )也可以寫作 0 到小於 (1 &lt;&amp;lt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="apcs_camp 蘋果問題題解">
 <meta property="og:url" content="https://grissia.github.io/2024/08/19/apcs-camp-sol-1/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="難到沒人懂的位元枚舉題目第一行有一個整數 n 表示蘋果的數量第二行有 n 個整數表示每個蘋果的重量 請輸出將蘋果分兩籃後 兩籃最小的重量差 12345測資53 2 7 4 1輸出1  解題思路假設五顆蘋果分別重 2,4,5,3,1跑一個迴圈從二進位的 00000 到 10000 (因為 00001 跟 11110 一樣，所以沒必要檢查到 11111 )也可以寫作 0 到小於 (1 &lt;&lt;">
+<meta property="og:description" content="難到沒人懂的位元枚舉 題目第一行有一個整數 n 表示蘋果的數量第二行有 n 個整數表示每個蘋果的重量 請輸出將蘋果分兩籃後 兩籃最小的重量差 12345測資53 2 7 4 1輸出1  解題思路假設五顆蘋果分別重 2,4,5,3,1跑一個迴圈從二進位的 00000 到 10000 (因為 00001 跟 11110 一樣，所以沒必要檢查到 11111 )也可以寫作 0 到小於 (1 &lt;&amp;lt">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-08-19T07:41:23.000Z">
-<meta property="article:modified_time" content="2024-08-19T08:06:38.540Z">
+<meta property="article:modified_time" content="2024-10-18T14:16:07.127Z">
 <meta property="article:author" content="Grissia">
-<meta property="article:tag" content="APCS">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="題解">
+<meta property="article:tag" content="APCS">
 <meta name="twitter:card" content="summary">
     
     
@@ -623,8 +623,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-19 16:06:38</span>
-            <span class="mobile">2024-08-19 16:06:38</span>
+            <span class="desktop">2024-10-18 22:16:07</span>
+            <span class="mobile">2024-10-18 22:16:07</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -652,15 +652,15 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/APCS/">APCS</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/C/">C++</a>&nbsp;
+                        <a href="/tags/C/">C++</a>&nbsp;
                     </li>
                 
                     <li>
                         | <a href="/tags/%E9%A1%8C%E8%A7%A3/">題解</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/APCS/">APCS</a>&nbsp;
                     </li>
                 
             </ul>
@@ -694,12 +694,14 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h2 id="難到沒人懂的位元枚舉"><a href="#難到沒人懂的位元枚舉" class="headerlink" title="難到沒人懂的位元枚舉"></a>難到沒人懂的位元枚舉</h2><h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><p>第一行有一個整數 <em>n</em> 表示蘋果的數量<br>第二行有 <em>n</em> 個整數表示每個蘋果的重量</p>
+            <p>難到沒人懂的位元枚舉</p>
+<h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>第一行有一個整數 <em>n</em> 表示蘋果的數量<br>第二行有 <em>n</em> 個整數表示每個蘋果的重量</p>
 <p>請輸出將蘋果分兩籃後 兩籃最小的重量差</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">測資</span><br><span class="line">5</span><br><span class="line">3 2 7 4 1</span><br><span class="line">輸出</span><br><span class="line">1</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><p>假設五顆蘋果分別重 <em>2,4,5,3,1</em><br>跑一個迴圈從二進位的 <em>00000</em> 到 <em>10000</em> (因為 <em>00001</em> 跟 <em>11110</em> 一樣，所以沒必要檢查到 <em>11111</em> )<br>也可以寫作 0 到小於 (1 &lt;&lt; 5-1) (減會優先運算所以就是 1 &lt;&lt; 4)<br>然後用這個二進位的位元來當作每顆蘋果進哪個籃子的依據<br><del>總之就是所有情況模擬一次拉 哈哈哈哈哈哈哈</del></p>
-<h3 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>); ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>); <span class="comment">// cin加速器</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; arr; </span><br><span class="line">    <span class="comment">// 存每個蘋果重</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> a,i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; a;</span><br><span class="line">        arr.<span class="built_in">push_back</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 輸入蘋果</span></span><br><span class="line">    </span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">1e18</span>; <span class="comment">// 先給一個很大的數</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; (<span class="number">1</span> &lt;&lt; n<span class="number">-1</span>); i++)&#123; <span class="comment">// 預定一個範圍</span></span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> sum[<span class="number">2</span>] = &#123;&#125;; <span class="comment">// 籃子</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j&lt;n; j++)&#123; </span><br><span class="line">            sum[i &gt;&gt; j &amp; <span class="number">1</span>] += arr[j];</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            喔喔喔 這東西看起來超可怕</span></span><br><span class="line"><span class="comment">            就像前面解題思路寫的 i 可能是 01100 之類的</span></span><br><span class="line"><span class="comment">            那 j 就是從 0 到 5-1</span></span><br><span class="line"><span class="comment">            所以這行的意思就是把 i 從右移 j 之後檢查最後一位</span></span><br><span class="line"><span class="comment">            如果是 1 就丟 1 號籃</span></span><br><span class="line"><span class="comment">            如果是 0 就丟 0 號籃</span></span><br><span class="line"><span class="comment">            */</span> </span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">min</span>(ans,<span class="built_in">llabs</span>(sum[<span class="number">0</span>] - sum[<span class="number">1</span>]));</span><br><span class="line">        <span class="comment">// 計算兩籃差 是不是小於 ans</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h2 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h2><p>假設五顆蘋果分別重 <em>2,4,5,3,1</em><br>跑一個迴圈從二進位的 <em>00000</em> 到 <em>10000</em> (因為 <em>00001</em> 跟 <em>11110</em> 一樣，所以沒必要檢查到 <em>11111</em> )<br>也可以寫作 0 到小於 (1 &lt;&lt; 5-1) (減會優先運算所以就是 1 &lt;&lt; 4)<br>然後用這個二進位的位元來當作每顆蘋果進哪個籃子的依據<br><del>總之就是所有情況模擬一次拉 哈哈哈哈哈哈哈</del></p>
+<h2 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h2><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>); ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>); <span class="comment">// cin加速器</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    vector&lt;<span class="type">long</span> <span class="type">long</span>&gt; arr; </span><br><span class="line">    <span class="comment">// 存每個蘋果重</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> a,i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        cin &gt;&gt; a;</span><br><span class="line">        arr.<span class="built_in">push_back</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 輸入蘋果</span></span><br><span class="line">    </span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">1e18</span>; <span class="comment">// 先給一個很大的數</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; (<span class="number">1</span> &lt;&lt; n<span class="number">-1</span>); i++)&#123; <span class="comment">// 預定一個範圍</span></span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> sum[<span class="number">2</span>] = &#123;&#125;; <span class="comment">// 籃子</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j&lt;n; j++)&#123; </span><br><span class="line">            sum[i &gt;&gt; j &amp; <span class="number">1</span>] += arr[j];</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            喔喔喔 這東西看起來超可怕</span></span><br><span class="line"><span class="comment">            就像前面解題思路寫的 i 可能是 01100 之類的</span></span><br><span class="line"><span class="comment">            那 j 就是從 0 到 5-1</span></span><br><span class="line"><span class="comment">            所以這行的意思就是把 i 從右移 j 之後檢查最後一位</span></span><br><span class="line"><span class="comment">            如果是 1 就丟 1 號籃</span></span><br><span class="line"><span class="comment">            如果是 0 就丟 0 號籃</span></span><br><span class="line"><span class="comment">            */</span> </span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">min</span>(ans,<span class="built_in">llabs</span>(sum[<span class="number">0</span>] - sum[<span class="number">1</span>]));</span><br><span class="line">        <span class="comment">// 計算兩籃差 是不是小於 ans</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
         </div>
 
         
@@ -713,7 +715,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-08-19 16:06:38
+                    :</strong> 2024-10-18 22:16:07
             </li>
         
         <li>
@@ -739,15 +741,15 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/APCS/">#APCS</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
                         <a href="/tags/C/">#C++</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
                         <a href="/tags/%E9%A1%8C%E8%A7%A3/">#題解</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/APCS/">#APCS</a>&nbsp;
                     </li>
                 
             </ul>
@@ -802,7 +804,7 @@
     <div class="post-toc">
         <div class="toc-title">此頁目錄</div>
         <div class="page-title">apcs_camp 蘋果問題題解</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%A3%E5%88%B0%E6%B2%92%E4%BA%BA%E6%87%82%E7%9A%84%E4%BD%8D%E5%85%83%E6%9E%9A%E8%88%89"><span class="nav-number">1.</span> <span class="nav-text">難到沒人懂的位元枚舉</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE"><span class="nav-number">1.1.</span> <span class="nav-text">題目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E6%80%9D%E8%B7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">解題思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">1.3.</span> <span class="nav-text">程式碼</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">題目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">解題思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.</span> <span class="nav-text">程式碼</span></a></li></ol>
 
     </div>
 </div>
