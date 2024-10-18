@@ -650,7 +650,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">13</div>
         <div class="label text-third-text-color text-sm">標籤</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -658,7 +658,7 @@
         <div class="label text-third-text-color text-sm">分類</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -691,7 +691,7 @@
 </div>
                 <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">13</div>
         <div class="label text-third-text-color text-sm">標籤</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -699,7 +699,7 @@
         <div class="label text-third-text-color text-sm">分類</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -727,6 +727,94 @@
 
                 
                     <div id="home-article-thumbnail" class="home-article-thumbnail relative h-[150px] overflow-hidden rounded-t-large">
+                        <a href="/2024/10/18/leetcode-322-coin-change/">
+                            <img src="/images/leetcode-322-coin-change/LeetCode_Sharing.png" alt="Leetcode 322.Coin-Change" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                        </a>
+                    </div>
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-5">
+                    <h3 class="home-article-title">
+                        <a href="/2024/10/18/leetcode-322-coin-change/">
+                            Leetcode 322.Coin-Change
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            想不到吧 我在寫 leetcode 找錢問題題目給一個 vector，裡面是你手邊有的零錢幣值只要符合幣值規定，你可以無限的取用硬幣想辦法用最少的硬幣湊出題目要求的金額Leetcode 題目連結 
+測資Example 1:
+
+Input: coins...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Fri Oct 18 2024 21:24:10 GMT+0800">
+                
+                    2024-10-18
+                
+            </span>
+        </span>
+        
+            <span class="home-article-category">
+                <i class="fa-solid fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E7%A8%8B%E5%BC%8F%E9%A1%8C%E8%A7%A3/">程式題解</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/C/">C++</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/%E7%AD%86%E8%A8%98/">筆記</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/%E9%A1%8C%E8%A7%A3/">題解</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/10/18/leetcode-322-coin-change/">繼續閱讀...<span class="seo-reader-text">Leetcode 322.Coin-Change</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+                    
+                
+
+                
+                    <div id="home-article-thumbnail" class="home-article-thumbnail relative h-[150px] overflow-hidden rounded-t-large">
                         <a href="/2024/10/05/k572/">
                             <img src="/images/k572/code.jpg" alt="Zerojudge k572 題解" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                         </a>
@@ -741,10 +829,12 @@
 
                     <div class="home-article-content markdown-body">
                         
-                            題目說明題目第一行輸入 N 筆資料每筆資料有一個區間 [L,R]求出重疊最多的數字，若相同則輸出最大者Zerojudge題目連結 
-測資12345319 2523 2618 20// 25
+                            離散化這個字光是聽起來就超帥題目第一行輸入 N 筆資料每筆資料有一個區間 [L,R]求出重疊最多的數字，若相同則輸出最大者Zerojudge題目連結 
+測資Example 1:
 
-12342-1000000000 999999995-99...
+Input:319 2523 2618 20Output:25
+
+Ex...
                         
                     </div>
 
@@ -1256,11 +1346,11 @@ STL容器的迭代器類型
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共 6 篇文章
+                        共 7 篇文章
                     </span>
                     
                         <span>
-                            共 3.9k 字
+                            共 4.7k 字
                         </span>
                     
                 </p>

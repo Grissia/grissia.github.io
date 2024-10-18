@@ -18,19 +18,20 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="題目說明題目第一行輸入 N 筆資料每筆資料有一個區間 [L,R]求出重疊最多的數字，若相同則輸出最大者Zerojudge題目連結  測資12345319 2523 2618 20&#x2F;&#x2F; 25  12342-1000000000 999999995-999999995 1000000000&#x2F;&#x2F; 999999995  解題關鍵整個程式最重要的邏輯就是:最優解一定會出現在剛剛輸入的一堆範圍中 某個範圍的邊">
+        <meta name="description" content="離散化這個字光是聽起來就超帥題目第一行輸入 N 筆資料每筆資料有一個區間 [L,R]求出重疊最多的數字，若相同則輸出最大者Zerojudge題目連結  測資Example 1:  Input:319 2523 2618 20Output:25  Example 2:  Input:2-1000000000 999999995-999999995 1000000000Output:999999995">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zerojudge k572 題解">
 <meta property="og:url" content="https://grissia.github.io/2024/10/05/k572/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="題目說明題目第一行輸入 N 筆資料每筆資料有一個區間 [L,R]求出重疊最多的數字，若相同則輸出最大者Zerojudge題目連結  測資12345319 2523 2618 20&#x2F;&#x2F; 25  12342-1000000000 999999995-999999995 1000000000&#x2F;&#x2F; 999999995  解題關鍵整個程式最重要的邏輯就是:最優解一定會出現在剛剛輸入的一堆範圍中 某個範圍的邊">
+<meta property="og:description" content="離散化這個字光是聽起來就超帥題目第一行輸入 N 筆資料每筆資料有一個區間 [L,R]求出重疊最多的數字，若相同則輸出最大者Zerojudge題目連結  測資Example 1:  Input:319 2523 2618 20Output:25  Example 2:  Input:2-1000000000 999999995-999999995 1000000000Output:999999995">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-10-05T05:26:29.000Z">
-<meta property="article:modified_time" content="2024-10-05T06:04:39.124Z">
+<meta property="article:modified_time" content="2024-10-18T13:39:39.171Z">
 <meta property="article:author" content="Grissia">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="筆記">
 <meta property="article:tag" content="題解">
+<meta property="article:tag" content="離散化">
 <meta name="twitter:card" content="summary">
     
     
@@ -557,7 +558,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">13</div>
         <div class="label text-third-text-color text-sm">標籤</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -565,7 +566,7 @@
         <div class="label text-third-text-color text-sm">分類</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -623,8 +624,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-05 14:04:39</span>
-            <span class="mobile">2024-10-05 14:04:39</span>
+            <span class="desktop">2024-10-18 21:39:39</span>
+            <span class="mobile">2024-10-18 21:39:39</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -663,6 +664,10 @@
                         | <a href="/tags/%E9%A1%8C%E8%A7%A3/">題解</a>&nbsp;
                     </li>
                 
+                    <li>
+                        | <a href="/tags/%E9%9B%A2%E6%95%A3%E5%8C%96/">離散化</a>&nbsp;
+                    </li>
+                
             </ul>
         </span>
     
@@ -670,7 +675,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>507 字數</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>523 字數</span>
         </span>
     
     
@@ -694,11 +699,15 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h2 id="題目說明"><a href="#題目說明" class="headerlink" title="題目說明"></a>題目說明</h2><h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><p>第一行輸入 N 筆資料<br>每筆資料有一個區間 [L,R]<br>求出重疊最多的數字，若相同則輸出最大者<br><a class="link"   target="_blank" rel="noopener" href="https://zerojudge.tw/ShowProblem?problemid=k572" >Zerojudge題目連結 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h3 id="測資"><a href="#測資" class="headerlink" title="測資"></a>測資</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">19 25</span><br><span class="line">23 26</span><br><span class="line">18 20</span><br><span class="line">// 25</span><br></pre></td></tr></table></figure></div>
-
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2</span><br><span class="line">-1000000000 999999995</span><br><span class="line">-999999995 1000000000</span><br><span class="line">// 999999995</span><br></pre></td></tr></table></figure></div>
-
+            <h2 id="離散化這個字光是聽起來就超帥"><a href="#離散化這個字光是聽起來就超帥" class="headerlink" title="離散化這個字光是聽起來就超帥"></a>離散化這個字光是聽起來就超帥</h2><h3 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h3><p>第一行輸入 N 筆資料<br>每筆資料有一個區間 [L,R]<br>求出重疊最多的數字，若相同則輸出最大者<br><a class="link"   target="_blank" rel="noopener" href="https://zerojudge.tw/ShowProblem?problemid=k572" >Zerojudge題目連結 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="測資"><a href="#測資" class="headerlink" title="測資"></a>測資</h3><p>Example 1:</p>
+<blockquote>
+<p>Input:<br>3<br>19 25<br>23 26<br>18 20<br>Output:<br>25</p>
+</blockquote>
+<p>Example 2:</p>
+<blockquote>
+<p>Input:<br>2<br>-1000000000 999999995<br>-999999995 1000000000<br>Output:<br>999999995</p>
+</blockquote>
 <h2 id="解題關鍵"><a href="#解題關鍵" class="headerlink" title="解題關鍵"></a>解題關鍵</h2><p>整個程式最重要的邏輯就是:<br>最優解一定會出現在剛剛輸入的一堆範圍中 某個範圍的邊界值<br>因為對於兩個重疊的範圍，</p>
 <p>如:</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-XXXXX---</span><br><span class="line">---OOOOO-</span><br><span class="line">123456789</span><br></pre></td></tr></table></figure></div>
@@ -720,7 +729,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-10-05 14:04:39
+                    :</strong> 2024-10-18 21:39:39
             </li>
         
         <li>
@@ -757,6 +766,10 @@
                         <a href="/tags/%E9%A1%8C%E8%A7%A3/">#題解</a>&nbsp;
                     </li>
                 
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E9%9B%A2%E6%95%A3%E5%8C%96/">#離散化</a>&nbsp;
+                    </li>
+                
             </ul>
         
 
@@ -764,6 +777,21 @@
 
         
             <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/10/18/leetcode-322-coin-change/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Leetcode 322.Coin-Change</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
                 
                 
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
@@ -794,7 +822,7 @@
     <div class="post-toc">
         <div class="toc-title">此頁目錄</div>
         <div class="page-title">Zerojudge k572 題解</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E8%AA%AA%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">題目說明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE"><span class="nav-number">1.1.</span> <span class="nav-text">題目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%B3%87"><span class="nav-number">1.2.</span> <span class="nav-text">測資</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E9%97%9C%E9%8D%B5"><span class="nav-number">2.</span> <span class="nav-text">解題關鍵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.</span> <span class="nav-text">程式碼</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%A2%E6%95%A3%E5%8C%96%E9%80%99%E5%80%8B%E5%AD%97%E5%85%89%E6%98%AF%E8%81%BD%E8%B5%B7%E4%BE%86%E5%B0%B1%E8%B6%85%E5%B8%A5"><span class="nav-number">1.</span> <span class="nav-text">離散化這個字光是聽起來就超帥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE"><span class="nav-number">1.1.</span> <span class="nav-text">題目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%B3%87"><span class="nav-number">1.2.</span> <span class="nav-text">測資</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E9%97%9C%E9%8D%B5"><span class="nav-number">2.</span> <span class="nav-text">解題關鍵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">3.</span> <span class="nav-text">程式碼</span></a></li></ol>
 
     </div>
 </div>
@@ -827,11 +855,11 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共 6 篇文章
+                        共 7 篇文章
                     </span>
                     
                         <span>
-                            共 3.9k 字
+                            共 4.7k 字
                         </span>
                     
                 </p>
