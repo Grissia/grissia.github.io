@@ -13,25 +13,17 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://grissia.github.io/2024/10/05/k572/"/>
+    <link rel="canonical" href="https://grissia.github.io/tags/pwn/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="離散化這個字光是聽起來就超帥 題目第一行輸入 N 筆資料每筆資料有一個區間 [L,R]求出重疊最多的數字，若相同則輸出最大者Zerojudge題目連結  測資Example 1:  Input:319 2523 2618 20Output:25  Example 2:  Input:2-1000000000 999999995-999999995 1000000000Output:99999999">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Zerojudge k572 題解">
-<meta property="og:url" content="https://grissia.github.io/2024/10/05/k572/index.html">
+        <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://grissia.github.io/tags/pwn/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="離散化這個字光是聽起來就超帥 題目第一行輸入 N 筆資料每筆資料有一個區間 [L,R]求出重疊最多的數字，若相同則輸出最大者Zerojudge題目連結  測資Example 1:  Input:319 2523 2618 20Output:25  Example 2:  Input:2-1000000000 999999995-999999995 1000000000Output:99999999">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2024-10-05T05:26:29.000Z">
-<meta property="article:modified_time" content="2024-10-18T14:16:39.674Z">
 <meta property="article:author" content="Grissia">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="筆記">
-<meta property="article:tag" content="題解">
-<meta property="article:tag" content="離散化">
 <meta name="twitter:card" content="summary">
     
     
@@ -44,7 +36,7 @@
     
     <title>
         
-            Zerojudge k572 題解 -
+            標籤: pwn -
         
         Grissia&#39;s Site
     </title>
@@ -379,7 +371,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class=""
+                                <a class="active"
                                    href="/tags"
                                         >
                                     <i class="fa-regular fa-tags fa-fw"></i>
@@ -516,7 +508,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
                            href="/tags"
                         >
                             <span>
@@ -586,251 +578,47 @@
             <div class="main-content">
 
                 
-                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
-    <div class="article-content-container">
-
-        <div class="article-title relative w-full">
-            
-                
-                
-                <img src="/images/k572/code.jpg" alt="Zerojudge k572 題解" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
-                
-                <div class="w-full flex items-center absolute bottom-0 justify-start">
-                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">Zerojudge k572 題解</h1>
-                </div>
-            
+                    <div class="tag-container">
+	<div class="tag-name">
+		<i class="fa-solid fa-tag"></i>&nbsp;pwn
+	</div>
+	<div class="tag-post-list">
+		
+<div class="archive-list-container">
+    
+        <section class="archive-item mb-spacing-unit last:mb-0">
+            <div class="archive-item-header flex flex-row items-center mb-2">
+                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
+                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">1</span>
             </div>
-
-        
-            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
-                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/images/grissia.jpg">
-                </div>
-                <div class="info flex flex-col justify-between">
-                    <div class="author flex items-center">
-                        <span class="name text-default-text-color text-lg font-semibold">Grissia</span>
-                        
-                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
-                        
-                    </div>
-                    <div class="meta-info">
-                        <div class="article-meta-info">
-    <span class="article-date article-meta-item">
-        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-10-05 13:26:29</span>
-        <span class="mobile">2024-10-05 13:26:29</span>
-        <span class="hover-info">撰寫</span>
-    </span>
-    
-        <span class="article-date article-meta-item">
-            <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-18 22:16:39</span>
-            <span class="mobile">2024-10-18 22:16:39</span>
-            <span class="hover-info">更新</span>
-        </span>
-    
-
-    
-        <span class="article-categories article-meta-item">
-            <i class="fa-regular fa-folders"></i>&nbsp;
-            <ul>
-                
+            
+            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
                 
                     
-                        
-                        <li>
-                            <a href="/categories/%E7%A8%8B%E5%BC%8F%E9%A1%8C%E8%A7%A3/">程式題解</a>&nbsp;
-                        </li>
                     
+                         <!-- Close the previous LI if not the first item -->
+                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='11-17'>
+                    
+                    <a href="/2024/11/17/ret2dlresolve/" class="block overflow-hidden w-fit">
+                        <span class="article-title my-0.5 text-2xl">ret2dlresolve</span>
+                    </a>
                     
                 
+                </li> <!-- Ensure the last item is properly closed -->
             </ul>
-        </span>
-    
-    
-        <span class="article-tags article-meta-item">
-            <i class="fa-regular fa-tags"></i>&nbsp;
-            <ul>
-                
-                    <li>
-                        <a href="/tags/C/">C++</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/%E7%AD%86%E8%A8%98/">筆記</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/%E9%A1%8C%E8%A7%A3/">題解</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/%E9%9B%A2%E6%95%A3%E5%8C%96/">離散化</a>&nbsp;
-                    </li>
-                
-            </ul>
-        </span>
-    
-
-    
-    
-        <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>523 字數</span>
-        </span>
-    
-    
-        <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>2 分鐘</span>
-        </span>
-    
-    
-        <span class="article-pv article-meta-item">
-            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
-        </span>
+        </section>
     
 </div>
 
-                    </div>
-                </div>
-            </div>
-        
-
-        
-
-
-        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <p>離散化這個字光是聽起來就超帥</p>
-<h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>第一行輸入 N 筆資料<br>每筆資料有一個區間 [L,R]<br>求出重疊最多的數字，若相同則輸出最大者<br><a class="link"   target="_blank" rel="noopener" href="https://zerojudge.tw/ShowProblem?problemid=k572" >Zerojudge題目連結 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="測資"><a href="#測資" class="headerlink" title="測資"></a>測資</h2><p>Example 1:</p>
-<blockquote>
-<p>Input:<br>3<br>19 25<br>23 26<br>18 20<br>Output:<br>25</p>
-</blockquote>
-<p>Example 2:</p>
-<blockquote>
-<p>Input:<br>2<br>-1000000000 999999995<br>-999999995 1000000000<br>Output:<br>999999995</p>
-</blockquote>
-<h2 id="解題關鍵"><a href="#解題關鍵" class="headerlink" title="解題關鍵"></a>解題關鍵</h2><p>整個程式最重要的邏輯就是:<br>最優解一定會出現在剛剛輸入的一堆範圍中 某個範圍的邊界值<br>因為對於兩個重疊的範圍，</p>
-<p>如:</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-XXXXX---</span><br><span class="line">---OOOOO-</span><br><span class="line">123456789</span><br></pre></td></tr></table></figure></div>
-
-<p>若有一個重疊且非邊界，如:5<br>則必存在一個重疊且邊界，如:6，則6為最佳解</p>
-<p>這時候就可以利用 map 非連續的特性<br>只對邊界進行處裡，而非整個範圍</p>
-<h2 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h2><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">這個程式用差分數列去計算 map</span></span><br><span class="line"><span class="comment">個人覺得超級巧妙</span></span><br><span class="line"><span class="comment">因為 map 本身會用 key 值排序</span></span><br><span class="line"><span class="comment">這樣在做前綴和時</span></span><br><span class="line"><span class="comment">就自然會包含剛剛輸入的所有座標</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> GCC optimize(<span class="string">&quot;Ofast,fast-math,unroll-loops,no-stack-protector&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&quot;\n&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    SIO;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    map&lt;<span class="type">int</span>,<span class="type">int</span>&gt; mp;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        <span class="type">int</span> l, r;</span><br><span class="line">        cin &gt;&gt; l &gt;&gt; r;</span><br><span class="line">        mp[l]++;</span><br><span class="line">        <span class="keyword">if</span>(!mp[r]) mp[r]; <span class="comment">// 注意這行</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        因為如果只是照一般差分數列，不寫這行的話</span></span><br><span class="line"><span class="comment">        就會處理不到 r 的位置</span></span><br><span class="line"><span class="comment">        所以 mp[r] 必須有一個值</span></span><br><span class="line"><span class="comment">        設定為 0 的話也不會影響到差分數列</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        mp[r<span class="number">+1</span>]--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    這邊不先計算前綴和</span></span><br><span class="line"><span class="comment">    而是直接用 tmp 這個變數去加，可以簡化程式</span></span><br><span class="line"><span class="comment">    所以 tmp 就會是與運行到 mp[i] 的前綴和相等</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="type">int</span> tmp = <span class="number">0</span>; <span class="comment">// 相當於算完前綴和後的 mp[i].second</span></span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>; <span class="comment">// 最優解的值</span></span><br><span class="line">    <span class="type">int</span> ind = <span class="number">-1</span>; <span class="comment">// 最優解的座標</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;i:mp)&#123;</span><br><span class="line">        tmp += i.second;</span><br><span class="line">        <span class="keyword">if</span>(tmp &gt; ans)&#123;</span><br><span class="line">            ans = tmp;</span><br><span class="line">            ind = i.first;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(tmp == ans)&#123;</span><br><span class="line">            ind = <span class="built_in">max</span>(ind, i.first); <span class="comment">// 座標優先取大者</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ind;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-        </div>
-
-        
-            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
-                <div class="article-copyright-info-container">
-    <ul>
-        <li><strong>標題:</strong> Zerojudge k572 題解</li>
-        <li><strong>作者:</strong> Grissia</li>
-        <li><strong>撰寫于
-                :</strong> 2024-10-05 13:26:29</li>
-        
-            <li>
-                <strong>更新于
-                    :</strong> 2024-10-18 22:16:39
-            </li>
-        
-        <li>
-            <strong>連結:</strong> https://grissia.github.io/2024/10/05/k572/
-        </li>
-        <li>
-            <strong>
-                版權宣告:
-            </strong>
-            
-
-            
-                本作品采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
-            
-        </li>
-    </ul>
+	</div>
 </div>
 
-            </div>
-        
-
-        
-            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/C/">#C++</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/%E7%AD%86%E8%A8%98/">#筆記</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/%E9%A1%8C%E8%A7%A3/">#題解</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/%E9%9B%A2%E6%95%A3%E5%8C%96/">#離散化</a>&nbsp;
-                    </li>
-                
-            </ul>
-        
-
-        
-
-        
-            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
-                
-                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2024/10/18/leetcode-322-coin-change/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Leetcode 322.Coin-Change</span>
-                                <span class="post-nav-item">上一篇</span>
-                            </span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="next"
-                        rel="next"
-                        href="/2024/09/15/HowToBeDuuuumb/"
-                        >
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">高中隔宿領隊教官新手指南</span>
-                                <span class="post-nav-item">下一篇</span>
-                            </span>
-                            <span class="right arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                
-            </div>
-        
-
-
-        
-    </div>
-
-    
-        <div class="toc-content-container">
-            <div class="post-toc-wrap">
-    <div class="post-toc">
-        <div class="toc-title">此頁目錄</div>
-        <div class="page-title">Zerojudge k572 題解</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">題目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%AC%E8%B3%87"><span class="nav-number">2.</span> <span class="nav-text">測資</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E9%97%9C%E9%8D%B5"><span class="nav-number">3.</span> <span class="nav-text">解題關鍵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">4.</span> <span class="nav-text">程式碼</span></a></li></ol>
-
-    </div>
-</div>
-        </div>
-    
+<div class="tag-paginator">
+	<div class="paginator">
+    <span class="page-number current">1</span>
 </div>
 
+</div>
 
 
                 
@@ -917,23 +705,6 @@
         </div>
     </div>
 
-    
-        <div class="post-tools">
-            <div class="post-tools-container">
-    <ul class="article-tools-list">
-        <!-- TOC aside toggle -->
-        
-            <li class="right-bottom-tools page-aside-toggle">
-                <i class="fa-regular fa-outdent"></i>
-            </li>
-        
-
-        <!-- go comment -->
-        
-    </ul>
-</div>
-
-        </div>
     
 
     <div class="right-side-tools-container">
